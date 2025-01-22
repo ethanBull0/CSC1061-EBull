@@ -1,1 +1,35 @@
 /.metadata/
+# Compiled class files
+*.class
+
+# Package files
+*.jar
+*.war
+*.ear
+
+# Temporary files
+*.log
+*.tmp
+*.bak
+
+# IDE-specific files
+.classpath
+.project
+.settings/
+
+# Maven build output
+target/
+
+# IntelliJ IDEA files
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# NetBeans project files
+nbproject/
+
+# Eclipse project files
+.metadata/
+.gradle/
+bin/

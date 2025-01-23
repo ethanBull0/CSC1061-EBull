@@ -8,6 +8,16 @@ public class Fan {
 	private static boolean on = false;
 	private static double radius = 5;
 	private static String color = "blue";
+	private static int id = 0;
+	
+	public Fan() {
+		super();
+	}
+	
+	public Fan(int speed, boolean on, double radius, String color, int id) {
+		this.id = id;
+	}
+	
 	public static int getSpeed() {
 		return speed;
 	}
@@ -32,10 +42,16 @@ public class Fan {
 	public static void setColor(String color) {
 		Fan.color = color;
 	}
+	public static int getId() {
+		return id;
+	}
 	
-	public static String toString() {
-		if (on = true) {
-			return ;
+	public String toString() {
+		if (on) {
+			return "ID: " + id + " Fan Speed: " + speed + " Color: " +  color + " Radius:" + radius;
+		} else {
+			return "fan is off";
 		}
 	}
+	
 }

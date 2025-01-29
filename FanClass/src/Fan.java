@@ -10,14 +10,19 @@ public class Fan {
 	private boolean on = false;
 	private double radius = 5;
 	private String color = "blue";
-	private static int id;
+	private int id = 1;
+	public static int nextId = 1;
 	
 	public Fan(int speed, boolean on, double radius, String color) {
-		id += 1; //unsure how to go about ids. given this code, id should increment every time a fan object is created
+		this.speed = speed;
+		this.on = on;
+		this.radius = radius;
+		this.color = color;
+		this.id = nextId++;
 	}
 	
 	public Fan() { //include super(); ?
-		id += 1;
+		this.id = nextId++;
 	}
 	
 	public int getSpeed() {
@@ -53,10 +58,24 @@ public class Fan {
 	public void turnOn() {
 		on = true;
 	}
+	public void turnOff() {
+		on = false;
+	}
+	public String speedToString() {
+		if (speed == SLOW) {
+			return "SLOW";
+		} else if (speed == MEDIUM) {
+			return "MEDIUM";
+		} else if (speed == FAST) {
+			return "FAST";
+		}
+		return "NULL";
+	}
+
 	
 	public String toString() {
 		if (on) {
-			return "ID: " + id + " Fan Speed: " + speed + " Color: " +  color + " Radius:" + radius;
+			return "ID: " + id + " Fan Speed: " + speedToString() + " Color: " +  color + " Radius:" + radius;
 		} else {
 			return "fan is off";
 		}

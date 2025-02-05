@@ -17,14 +17,16 @@ public class SalariedEmployee extends Employee {
 	}
 	
 	@Override
-	public int getPaymentAmount() {
+	public double getPaymentAmount() {
 		return weeklySalary;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "SalariedEmployee [weeklySalary=" + weeklySalary + "]";
+		return "SalariedEmployee [weeklySalary=" + weeklySalary + ", " + super.toString() + "]";
 	}
+	
+	
 
 	
 }

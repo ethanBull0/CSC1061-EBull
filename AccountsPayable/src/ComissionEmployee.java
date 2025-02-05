@@ -27,13 +27,13 @@ public class ComissionEmployee extends Employee {
 	}
 	
 	@Override
-	public int getPaymentAmount() {
+	public double getPaymentAmount() {
 		return grossSales * commissionRate;
 	}
 	
 	@Override
 	public String toString() {
-		return "ComissionEmployee [grossSales=" + grossSales + ", commissionRate=" + commissionRate + "]";
+		return "ComissionEmployee [grossSales=" + grossSales + ", commissionRate=" + commissionRate + "], " + super.toString();
 	}
 
 

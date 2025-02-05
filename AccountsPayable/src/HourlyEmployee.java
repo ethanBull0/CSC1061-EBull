@@ -1,13 +1,13 @@
 
 public class HourlyEmployee extends Employee {
-	private int hourlyWage;
+	private double hourlyWage;
 	private int hours;
 	public HourlyEmployee(String firstName, String lastName, int sSN, int hourlyWage, int hours) {
 		super(firstName, lastName, sSN);
 		this.hourlyWage = hourlyWage;
 		this.hours = hours;
 	}
-	public int getHourlyWage() {
+	public double getHourlyWage() {
 		return hourlyWage;
 	}
 	public void setHourlyWage(int hourlyWage) {
@@ -20,8 +20,12 @@ public class HourlyEmployee extends Employee {
 		this.hours = hours;
 	}
 	@Override
+	public double getPaymentAmount() {
+		return (double)hourlyWage * hours;
+	}
+	@Override
 	public String toString() {
-		return "HourlyEmployee [hourlyWage=" + hourlyWage + ", hours=" + hours + "]";
+		return "HourlyEmployee [hourlyWage=" + hourlyWage + ", hours=" + hours + "], " + super.toString();
 	}
 	
 }

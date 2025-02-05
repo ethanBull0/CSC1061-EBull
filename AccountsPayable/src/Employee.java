@@ -5,7 +5,7 @@ public class Employee {
 	private int sSN;
 	int pay;
 	
-	public int getPaymentAmount() {
+	public double getPaymentAmount() {
 		return pay;
 	}
 

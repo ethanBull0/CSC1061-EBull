@@ -1,18 +1,21 @@
 
 public class SalariedEmployee extends Employee {
 	
-	private int weeklySalary;
+	private double weeklySalary;
 	
+	public SalariedEmployee() {
+		
+	}
 	public SalariedEmployee(String firstName, String lastName, int sSN, int weeklySalary) {
 		super(firstName, lastName, sSN);
 		this.weeklySalary = weeklySalary;
 	}
 
-	public int getWeeklySalary() {
+	public double getWeeklySalary() {
 		return weeklySalary;
 	}
 
-	public void setWeeklySalary(int weeklySalary) {
+	public void setWeeklySalary(double weeklySalary) {
 		this.weeklySalary = weeklySalary;
 	}
 	

@@ -4,6 +4,9 @@ public class ComissionEmployee extends Employee {
 	private int grossSales;
 	private int commissionRate;
 	
+	public ComissionEmployee() {
+		
+	}
 	public ComissionEmployee(String firstName, String lastName, int sSN, int grossSales, int commissionRate) {
 		super(firstName, lastName, sSN);
 		this.grossSales = grossSales;
@@ -28,7 +31,7 @@ public class ComissionEmployee extends Employee {
 	
 	@Override
 	public double getPaymentAmount() {
-		return grossSales * commissionRate;
+		return grossSales * (commissionRate / 100);
 	}
 	
 	@Override

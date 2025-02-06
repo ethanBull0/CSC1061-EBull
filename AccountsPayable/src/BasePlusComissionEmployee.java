@@ -1,19 +1,23 @@
 
-public class BasePlusCommissionEmployee extends ComissionEmployee {
+public class BasePlusComissionEmployee extends ComissionEmployee {
 	
-	int basePay;
+	double basePay;
 	
-	public BasePlusCommissionEmployee(String firstName, String lastName, int sSN, int grossSales, int commissionRate, int basePay) {
+	public BasePlusComissionEmployee() {
+		
+	}
+	
+	public BasePlusComissionEmployee(String firstName, String lastName, int sSN, int grossSales, int commissionRate, int basePay) {
 		super(firstName, lastName, sSN, grossSales, commissionRate);
 		this.basePay = basePay;
 		// TODO Auto-generated constructor stub
 	}
 
-	public int getBasePay() {
+	public double getBasePay() {
 		return basePay;
 	}
 
-	public void setBasePay(int basePay) {
+	public void setBasePay(double basePay) {
 		this.basePay = basePay;
 	}
 	

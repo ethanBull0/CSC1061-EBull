@@ -7,10 +7,13 @@ public class HourlyEmployee extends Employee {
 		this.hourlyWage = hourlyWage;
 		this.hours = hours;
 	}
+	public HourlyEmployee() {
+		// TODO Auto-generated constructor stub
+	}
 	public double getHourlyWage() {
 		return hourlyWage;
 	}
-	public void setHourlyWage(int hourlyWage) {
+	public void setHourlyWage(double hourlyWage) {
 		this.hourlyWage = hourlyWage;
 	}
 	public int getHours() {

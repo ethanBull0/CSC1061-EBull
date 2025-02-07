@@ -7,7 +7,7 @@ public class BasePlusComissionEmployee extends ComissionEmployee {
 		
 	}
 	
-	public BasePlusComissionEmployee(String firstName, String lastName, int sSN, int grossSales, int commissionRate, int basePay) {
+	public BasePlusComissionEmployee(String firstName, String lastName, int[] sSN, int grossSales, int commissionRate, int basePay) {
 		super(firstName, lastName, sSN, grossSales, commissionRate);
 		this.basePay = basePay;
 		// TODO Auto-generated constructor stub
@@ -29,7 +29,7 @@ public class BasePlusComissionEmployee extends ComissionEmployee {
 	@Override
 	public String toString() {
 		return "BasePlusCommissionEmployee [basePay=" + basePay + ", " + super.toString() + ", getFirstName()=" + getFirstName() + ", getLastName()="
-				+ getLastName() + ", getSSN()=" + getSSN() + "]";
+				+ getLastName() + ", getSSN()=" + sSNToString() + "]";
 	}
 
 	

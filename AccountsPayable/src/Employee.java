@@ -2,14 +2,14 @@
 public class Employee {
 	private String firstName;
 	private String lastName;
-	private int sSN;
+	private int[] sSN = new int[9];
 	int pay;
 	
 	public double getPaymentAmount() {
 		return pay;
 	}
 
-	public Employee(String firstName, String lastName, int sSN) {
+	public Employee(String firstName, String lastName, int[] sSN) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -36,17 +36,27 @@ public class Employee {
 		this.lastName = lastName;
 	}
 
-	public int getSSN() {
+	public int[] getSSN() {
 		return sSN;
 	}
 
-	public void setSSN(int sSN) {
-		sSN = sSN;
+	public void setSSN(int[] sSN) {
+		while (sSN.length != 9) {
+			System.out.println("Incorrect SSN length, please try setting SSN again.");
+		}
+		this.sSN = sSN;
 	}
 
+	public String sSNToString() {
+		String sSNString = "";
+		for (int i : sSN) {
+			sSNString += i;
+		}
+		return sSNString;
+	}
 	@Override
 	public String toString() {
-		return "Employee [firstName=" + firstName + ", lastName=" + lastName + ", SSN=" + sSN + "]";
+		return "Employee [firstName=" + firstName + ", lastName=" + lastName + ", SSN=" + sSNToString() + "]";
 	}
 	
 }

@@ -7,7 +7,7 @@ public class ComissionEmployee extends Employee {
 	public ComissionEmployee() {
 		
 	}
-	public ComissionEmployee(String firstName, String lastName, int sSN, int grossSales, int commissionRate) {
+	public ComissionEmployee(String firstName, String lastName, int[] sSN, int grossSales, int commissionRate) {
 		super(firstName, lastName, sSN);
 		this.grossSales = grossSales;
 		this.commissionRate = commissionRate;

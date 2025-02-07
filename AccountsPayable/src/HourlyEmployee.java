@@ -1,8 +1,8 @@
 
 public class HourlyEmployee extends Employee {
 	private double hourlyWage;
-	private int hours;
-	public HourlyEmployee(String firstName, String lastName, int sSN, int hourlyWage, int hours) {
+	private double hours;
+	public HourlyEmployee(String firstName, String lastName, int[] sSN, int hourlyWage, int hours) {
 		super(firstName, lastName, sSN);
 		this.hourlyWage = hourlyWage;
 		this.hours = hours;
@@ -16,10 +16,10 @@ public class HourlyEmployee extends Employee {
 	public void setHourlyWage(double hourlyWage) {
 		this.hourlyWage = hourlyWage;
 	}
-	public int getHours() {
+	public double getHours() {
 		return hours;
 	}
-	public void setHours(int hours) {
+	public void setHours(double hours) {
 		this.hours = hours;
 	}
 	@Override

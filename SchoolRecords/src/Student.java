@@ -1,25 +1,25 @@
 
 public class Student extends Person {
-	private Rank status;
+	private Rank Status;
 
 	public Student() {
 		super();
-		status = null;
+		Status = null;
 	}
 	public Student(String first, String last, String phoneNum, String email, Rank status) {
 		super(first, last, phoneNum, email);
-		this.status = status;
+		this.Status = status;
 	}
 	@Override
 	public String toString() {
-		return "Student [status=" + status + "]";
+		return "Student [status=" + Status + "]";
 	}
 
 	public Rank getStatus() {
-		return status;
+		return Status;
 	}
 
-	public void setStatus(Rank status) {
-		this.status = status;
+	public void setStatus(Rank Status) {
+		this.Status = Status;
 	}
 }

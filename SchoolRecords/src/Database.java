@@ -1,8 +1,6 @@
 import java.util.ArrayList;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
+import java.util.List;
+import java.io.*;
 
 public class Database {
 
@@ -20,7 +18,7 @@ public class Database {
 		}
 	}
 	
-	public void writePerson(Person p) { //reads all persons and its subclasses, cannot write Object
+	public static void writePerson(Person p) { //reads all persons and its subclasses, cannot write Object
 		if (printer == null) {
 			try {
 				printer = new PrintWriter(outFile);
@@ -36,20 +34,20 @@ public class Database {
 				+ "," + p.getEmailAddress()
 				);
 		if (p instanceof Student) {
-			printer.print(((Student)p).getStatus());
+			printer.print("," + ((Student)p).getStatus());
 		} else if (p instanceof Employee) {
-			printer.print(((Employee)p).getDateHired()
+			printer.print("," + ((Employee)p).getDateHired()
 					+ "," + ((Employee)p).getOffice()
 					+ "," + ((Employee)p).getSalary()
 					);
 		} else if (p instanceof Faculty) {
-			printer.print(((Employee)p).getDateHired()
+			printer.print("," + ((Employee)p).getDateHired()
 					+ "," + ((Employee)p).getOffice()
 					+ "," + ((Employee)p).getSalary()
 					+ "," + ((Faculty)p).getOfficeHours()
 					);
 		} else if (p instanceof Staff) {
-			printer.print(((Employee)p).getDateHired()
+			printer.print("," + ((Employee)p).getDateHired()
 					+ "," + ((Employee)p).getOffice()
 					+ "," + ((Employee)p).getSalary()
 					+ "," + ((Staff)p).getTitle()
@@ -61,14 +59,40 @@ public class Database {
 		printer.flush();
 	}
 	
-	public void readPerson(File f) {
-		ArrayList<Person> personList = new ArrayList<Person>();
+	public static void readPerson(File f) {
+		BufferedReader reader = null;
+		List<Person> personList = new ArrayList<Person>();
+		String line = "";
 		try {
-			FileReader read = new FileReader(f);
+			reader = new BufferedReader(new FileReader(f));
+			try {
+				while ((line = reader.readLine()) != null) {
+					String[] vals = line.split(",");
+					String firstName = vals[1];
+					String lastName = vals[2];
+					String phoneNumber = vals[3];
+					String email = vals[4];
+					switch(vals[0]) {
+					case "Student":
+						break;
+					case "Employee":
+						break;
+					case "Faculty":
+						break;
+					case "Staff":
+						break;
+					}
+					
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		} catch (FileNotFoundException e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
+		
 	}
 	
 }

@@ -6,7 +6,12 @@ public class Faculty extends Employee{
 	public Faculty() {
 		
 	}
-	
+	public Faculty(String first, String last, String phoneNum, String email, String office,
+			double salary, String dateHired, String officeHours, Rank status) {
+		super(first, last, phoneNum, email, office, salary, dateHired);
+		this.officeHours = officeHours;
+		this.status = status;
+	}
 	public Faculty(String officeHours, Rank status) {
 		super();
 		this.officeHours = officeHours;

@@ -1,4 +1,3 @@
-
 public class Staff extends Employee{
 	private String title;
 	
@@ -21,7 +20,7 @@ public class Staff extends Employee{
 
 	@Override
 	public String toString() {
-		return "Staff [title=" + title + "]";
+		return super.toString() + " title=" + title;
 	}
 
 

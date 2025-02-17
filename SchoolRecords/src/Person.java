@@ -1,7 +1,7 @@
 
 public class Person {
-	private String name;
-	private String address;
+	private String firstName;
+	private String lastName;
 	private String phoneNumber;
 	private String emailAddress;
 	
@@ -11,24 +11,24 @@ public class Person {
 	
 	public Person(String name, String address, String phoneNumber, String emailAddress) {
 		super();
-		this.name = name;
-		this.address = address;
+		this.firstName = name;
+		this.lastName = address;
 		this.phoneNumber = phoneNumber;
 		this.emailAddress = emailAddress;
 	}
 
 	
 	public String getName() {
-		return name;
+		return firstName;
 	}
 	public void setName(String name) {
-		this.name = name;
+		this.firstName = name;
 	}
 	public String getAddress() {
-		return address;
+		return lastName;
 	}
 	public void setAddress(String address) {
-		this.address = address;
+		this.lastName = address;
 	}
 	public String getPhoneNumber() {
 		return phoneNumber;
@@ -44,7 +44,7 @@ public class Person {
 	}
 	@Override
 	public String toString() {
-		return "name=" + name + ", address=" + address + ", phoneNumber=" + phoneNumber + ", emailAddress="
-				+ emailAddress + "]";
+		return "firstName=" + firstName + ", lastName=" + lastName + ", phoneNumber=" + phoneNumber + ", emailAddress="
+				+ emailAddress + " ";
 	}
 }

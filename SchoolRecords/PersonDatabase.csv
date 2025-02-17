@@ -1,6 +1,6 @@
-Student,Ethan,B.,970-111-1111,ethan@mail.comSOPHOMORE
-Student,Brooklyn,F.,303-111-1111,brooklyn@mail.comSOPHOMORE
-Faculty,John,Cool,123-456-7890,justacoolguy@mail.com05/01/2020,BP,34864.23
-Faculty,Chad,S.,333-333-9870,chad@mail.com05/01/2020,AP,34864.23
-Staff,Big,Guy,570-865-2456,biggie@mail.com03/13/1999,LBP,86543.35
-Staff,Small,Fry,989-222-3456,dunce@mail.com02/24/2025,CP,10.0
+Student,Ethan,B.,970-111-1111,ethan@mail.com,SOPHOMORE
+Student,Brooklyn,F.,303-111-1111,brooklyn@mail.com,SOPHOMORE
+Faculty,John,Cool,123-456-7890,justacoolguy@mail.com,05/01/2020,BP,34864.23,11:30AM-12:30PM BP125 Tues and Thur,SENIOR
+Faculty,Chad,S.,333-333-9870,chad@mail.com,05/01/2020,AP,34864.23,11:30AM-12:30PM BP125 Tues and Thur,SENIOR
+Staff,Big,Guy,570-865-2456,biggie@mail.com,03/13/1999,LBP,86543.35,Chairman
+Staff,Small,Fry,989-222-3456,dunce@mail.com,02/24/2025,CP,10.0,Grunt

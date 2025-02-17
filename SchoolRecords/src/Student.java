@@ -12,7 +12,7 @@ public class Student extends Person {
 	}
 	@Override
 	public String toString() {
-		return "Student [status=" + Status + "]";
+		return   super.toString() + "status=" + Status;
 	}
 
 	public Rank getStatus() {

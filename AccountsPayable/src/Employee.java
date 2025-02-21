@@ -4,7 +4,10 @@ public class Employee {
 	private String lastName;
 	private int[] sSN = new int[9];
 	int pay;
-	
+	/**
+	 * 
+	 * @return Payment amount
+	 */
 	public double getPaymentAmount() {
 		return pay;
 	}

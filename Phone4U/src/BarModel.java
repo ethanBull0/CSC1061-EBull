@@ -1,10 +1,10 @@
 
-public class BarModel implements Repairable {
+public class BarModel extends PhoneSpec implements Repairable {
 
 	@Override
-	public void howToRepair() {
+	public String howToRepair() {
 		// TODO Auto-generated method stub
-		
+		return "";
 	}
 
 	@Override

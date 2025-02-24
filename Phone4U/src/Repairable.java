@@ -1,5 +1,5 @@
 
 public interface Repairable {
-	void howToRepair();
+	String howToRepair();
 	double costToRepair();
 }

@@ -1,10 +1,10 @@
 
-public class FlipModel implements Repairable {
+public class FlipModel extends PhoneSpec implements Repairable {
 
 	@Override
-	public void howToRepair() {
+	public String howToRepair() {
 		// TODO Auto-generated method stub
-		
+		return "";
 	}
 
 	@Override

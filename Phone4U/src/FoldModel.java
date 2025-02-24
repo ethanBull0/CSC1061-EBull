@@ -1,4 +1,4 @@
 
-public class FoldModel {
+public class FoldModel extends PhoneSpec {
 
 }

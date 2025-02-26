@@ -42,6 +42,7 @@ public abstract class PhoneSpec implements Cloneable,Comparable<PhoneSpec> {
 	
 	public PhoneSpec clone() throws CloneNotSupportedException {
 		PhoneSpec clone = (PhoneSpec) super.clone();
+		ImeiClone = new IMEI();
 		return clone;
 		
 	}
@@ -53,5 +54,10 @@ public abstract class PhoneSpec implements Cloneable,Comparable<PhoneSpec> {
 		int storageDif = this.storageMB - p.storageMB;
 		return cacheDif / storageDif; //weird implementation
 	}
+
+	public IMEI getImei() {
+		return imei;
+	}
+
 	
 }

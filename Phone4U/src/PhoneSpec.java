@@ -4,6 +4,7 @@ public abstract class PhoneSpec implements Cloneable,Comparable<PhoneSpec> {
 	private int cpuMHZ;
 	private int cacheMB;
 	private int storageMB;
+	private IMEI imei;
 	
 	public String toString() {
 		String string = "CPU Frequency: ";

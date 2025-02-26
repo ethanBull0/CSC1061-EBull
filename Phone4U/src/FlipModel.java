@@ -4,7 +4,7 @@ public class FlipModel extends PhoneSpec implements Repairable {
 	@Override
 	public String howToRepair() {
 		// TODO Auto-generated method stub
-		return "";
+		return "flip";
 	}
 
 	@Override

@@ -6,6 +6,14 @@ public abstract class PhoneSpec implements Cloneable,Comparable<PhoneSpec> {
 	private int storageMB;
 	private IMEI imei;
 	
+	public PhoneSpec(int cpuMHZ, int cacheMB, int storageMB) {
+		super();
+		this.cpuMHZ = cpuMHZ;
+		this.cacheMB = cacheMB;
+		this.storageMB = storageMB;
+		imei = new IMEI();
+	}
+
 	public String toString() {
 		String string = "CPU Frequency: ";
 			string += unitStringFormat(cpuMHZ);
@@ -27,7 +35,6 @@ public abstract class PhoneSpec implements Cloneable,Comparable<PhoneSpec> {
 			string += "TB";
 		}
 			else {
-			
 			string += "MB";
 			}
 		return string;
@@ -42,7 +49,9 @@ public abstract class PhoneSpec implements Cloneable,Comparable<PhoneSpec> {
 	
 	public PhoneSpec clone() throws CloneNotSupportedException {
 		PhoneSpec clone = (PhoneSpec) super.clone();
-		ImeiClone = new IMEI();
+		IMEI imeiClone = new IMEI();
+		clone.imei = imeiClone;
+		clone.imei.genUUID();
 		return clone;
 		
 	}
@@ -54,7 +63,9 @@ public abstract class PhoneSpec implements Cloneable,Comparable<PhoneSpec> {
 		int storageDif = this.storageMB - p.storageMB;
 		return cacheDif / storageDif; //weird implementation
 	}
-
+	
+	
+	
 	public IMEI getImei() {
 		return imei;
 	}

@@ -13,12 +13,17 @@ public class IMEI { //instance
 		UUID id = UUID.randomUUID();
 		String idString = id.toString().replace("-", "");
 		char[] ids = idString.toCharArray();
-		for (char c : ids) {
-			int thisInt = Character.getNumericValue(c);
-			idArr.add((char) thisInt);
+		for (int i = 0; i < ids.length; i++) {
+			int thisInt = Character.getNumericValue(ids[i]);
+			if (thisInt > 9) {
+				idArr.add(Character.forDigit(thisInt / 10, 10));
+				idArr.add(Character.forDigit(thisInt % 10, 10));
+				i++;
+			} else {
+				idArr.add(Character.forDigit(thisInt, 10));
+			}
+			
 		}
-		System.out.print("generated UUID: ");
-		printIMEI(idArr);
 		
 	}
 	
@@ -26,15 +31,13 @@ public class IMEI { //instance
 	 * 
 	 * {@summary} Prints the IMEI using sysout, unless it does not exist in which it prints a usage message for genUUID.
 	 */
-	public void printIMEI(ArrayList<Character> chars) {
-		if (idArr.equals(null)) {
-			System.out.println("Generate an IMEI by using _____.genUUID()");
-		} else {
-			for(Character c : chars) {
-				System.out.println(c);
+	public void printIMEI() {
+			for (Character c : idArr) {
+				System.out.print(c);
 			}
+			System.out.println("\n");
 		}
-	}
+	
 	
 	public ArrayList<Character> getIMEI() {
 		return idArr;

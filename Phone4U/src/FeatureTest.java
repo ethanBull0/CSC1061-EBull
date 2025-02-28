@@ -28,5 +28,8 @@ public class FeatureTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		System.out.println(speedRacerPlus.getClass());
+		speedRacerPlus.getImei().printIMEI();
 	}
 }

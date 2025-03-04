@@ -9,7 +9,7 @@ public class BarModel extends PhoneSpec implements Repairable {
 	@Override
 	public String howToRepair() {
 		// TODO Auto-generated method stub
-		return "bar";
+		return "Remove the back cover by gently heating the surface up with a heat gun, then using suction to remove it.\nRemove the ribbon cable to remove the screen.";
 	}
 
 	@Override

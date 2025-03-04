@@ -36,7 +36,11 @@ public class MyArrayList<T> implements List<T>{
 
 	@Override
 	public boolean contains(Object o) {
-		// TODO Auto-generated method stub
+		for (Object t : array) {
+			if (o.equals(t)) {
+				return true;
+			}
+		}
 		return false;
 	}
 
@@ -89,7 +93,7 @@ public class MyArrayList<T> implements List<T>{
 			}
 			smallerArr[i] = array[i];
 		}
-		//TODO
+		array = smallerArr;
 			
 		size--;
 		return true;
@@ -97,13 +101,21 @@ public class MyArrayList<T> implements List<T>{
 
 	@Override
 	public boolean containsAll(Collection<?> c) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean match = false;
+		for (int i = 0; i < size; i++) {
+			if (c.contains(i)) {
+				match = true;
+			}
+			if (match == false) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@Override
-	public boolean addAll(Collection<? extends T> c) {
-		// TODO Auto-generated method stub
+	public boolean addAll(Collection<? extends T> c) { //need iterator and set
+		Iterator<Collection<? extends T>> iterate = (Iterator<Collection<? extends T>>) c.iterator(); //looks sus
 		return false;
 	}
 

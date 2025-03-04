@@ -11,7 +11,8 @@ public class FlipModel extends PhoneSpec implements Repairable {
 	@Override
 	public String howToRepair() {
 		// TODO Auto-generated method stub
-		return "flip";
+		return "Unscrew the 2 bolts holding in the battery cover.\nUnscrew the one bolt holding in the hinge.\nUndo the battery connector using a pair of tweezers\n"
+				+ "Undo the ribbon cable holding in the screen.\nTo remove the motherboard, remove the four screws holding it in.";
 	}
 
 	@Override

@@ -18,7 +18,7 @@ import java.io.IOException;
 public class Main {
 
 	public static void main(String[] args) {
-		List<Song> playlist = new LinkedList<Song>();
+		MyDoubleLinkedList<Song> playlist = new MyDoubleLinkedList<Song>();
 		int choice = 0;
 		Scanner scn = new Scanner(System.in);
 
@@ -114,16 +114,18 @@ public class Main {
 				printPlaylist(playlist);
 				break;
 			case 6:
-				
+				System.out.println(playlist.count());
 				break;
 			case 7:
-
+				
 				break;
 			case 8:
-
+				playlist.shuffle();
+				System.out.println("Shuffled playlist");
 				break;
 			case 9:
-
+				playlist.reverse();
+				System.out.println("Reversed playlist");
 				break;
 			case 10:
 				System.exit(1);

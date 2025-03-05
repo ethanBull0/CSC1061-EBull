@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Random;
 
 
 /**
@@ -342,16 +343,50 @@ public class MyDoubleLinkedList<E> implements List<E> {
 	 * Ethan Bull - Additions to MyDoubleLinkedList for compatibility with PlaylistManager
 	 */
 	public int count() {
-		
+		int count = 0;
+		Node node = head;
+		while(node.next != null) {
+			count++;
+			node = node.next;
+		}
+		return count;
 
 	}
 	
 	public void reverse() {
+		Object[] toArr = toArray();
+		clear();
+		/* while (size > 0) {
+			while (transfer.next != null) {
+				transfer = transfer.next;
+			}
+			
+		} */
+		for (int i = toArr.length - 1; i > 0; i--) {
+			add((E) toArr[i]); //object cast
+		}
 		
 	}
 
 	public void shuffle() {
-		
+		Random ran = new Random();
+		Object[] toArr = toArray();
+		Object[] shuffledArr = new Object[toArr.length];
+		int[] goodVals = new int[toArr.length];
+		clear();
+		for (int i = toArr.length - 1; i > 0; i--) {
+			int randomIndex = (ran.nextInt()) % toArr.length;
+			if (goodVals[randomIndex] == 0) {
+				continue;
+			} else {
+				shuffledArr[i] = toArr[randomIndex];
+				goodVals[randomIndex] = 0;
+			}
+		}
+		clear();
+		for (Object obj : shuffledArr) {
+			add((E) obj);
+		}
 	}
 	
 }

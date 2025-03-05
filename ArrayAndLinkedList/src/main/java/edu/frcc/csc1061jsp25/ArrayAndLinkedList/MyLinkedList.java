@@ -10,36 +10,63 @@ import org.w3c.dom.Node;
 
 public class MyLinkedList<T> implements List<T> {
 	private Node head;
-	
-	private Node node;
+	private int size;
 
+	private class Node {
+		T data;
+		Node next;
+		
+		public Node(T data) {
+			this.data = data;
+			next = null;
+		}
+	}
+	
+	public MyLinkedList() {
+		head = null;
+		size = 0;
+	}
+	
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		/*int count = 0;
+		for (Node node = head; node != null; node = node.next) {
+			count++;
+		}
+		return count; */
+		return size;
 	}
 
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		/* return size == 0; */
+		return head == null;
 	}
 
 	@Override
 	public boolean contains(Object o) {
-		// TODO Auto-generated method stub
+		Node node = head;
+		while (node.next != null) {
+			if (node.equals(o)) {
+				return true;
+			}
+			node = node.next;
+		}
 		return false;
 	}
 
 	@Override
 	public Iterator<T> iterator() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public Object[] toArray() {
-		// TODO Auto-generated method stub
+		Object[] toArr = new Object[size];
+		for (int i = 0; i < size; i++) {
+			
+		}
 		return null;
 	}
 
@@ -51,13 +78,29 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public boolean add(T e) {
-		// TODO Auto-generated method stub
-		return false;
+		if (head == null) {
+			head = new Node(e);
+		}
+		Node node = head;
+		while (node.next != null) {
+			node = node.next;
+		}
+		node.next = new Node(e);
+		size++;
+		return true;
 	}
 
 	@Override
 	public boolean remove(Object o) {
-		// TODO Auto-generated method stub
+		Node node = head;
+		while (node.next != null) {
+			if (node.data.equals(o)) {
+				node = null;
+				size--;
+				return true;
+			}
+		}
+		
 		return false;
 	}
 
@@ -93,44 +136,94 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
+		head = null;
+		size = 0;
 		
 	}
 
 	@Override
 	public T get(int index) {
-		// TODO Auto-generated method stub
-		return null;
+		check(index);
+		Node node = getNode(index);
+		return node.data;
 	}
 
 	@Override
 	public T set(int index, T element) {
-		// TODO Auto-generated method stub
-		return null;
+		check(index);
+		Node node = getNode(index);
+		T old = node.data;
+		node.data = element;
+		return old;
 	}
 
+	private void check(int index) {
+		if (index < 0 || index >= size) {
+			throw new IndexOutOfBoundsException();
+		}
+	}
+	
+	private Node getNode(int index) {
+		check(index);
+		Node node = head;
+		for (int i = 0; i < index; i++) {
+			node = node.next;
+		}
+		return node;
+	}
+	
 	@Override
 	public void add(int index, T element) {
-		// TODO Auto-generated method stub
+		Node newNode = new Node(element);
+		if (index == 0) {
+			newNode.next = head;
+			head = newNode;
+		}
+		
+		Node prevNode = getNode(index - 1);
+		newNode.next = prevNode.next;
+		prevNode.next = newNode;
 		
 	}
 
 	@Override
 	public T remove(int index) {
-		// TODO Auto-generated method stub
-		return null;
+		if (index == 0) {
+			head = head.next;
+		}
+		Node node = getNode(index);
+		T data = node.data;
+		
+		Node prevNode = getNode(index - 1);
+		prevNode.next = prevNode.next.next;
+		
+		return data;
 	}
 
 	@Override
-	public int indexOf(Object o) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int indexOf(Object o) { //TODO returns 0 not -1
+		Node node = head;
+		int count = 0;
+		while (node.next != null && !(node.data.equals(o))) {
+			node = node.next;
+			count++;
+		}
+		return count;
 	}
 
 	@Override
 	public int lastIndexOf(Object o) {
-		// TODO Auto-generated method stub
-		return 0;
+		Node node = head;
+		int count = 0;
+		int lastIndexFound = 0;
+		while(node.next != null) {
+			node = node.next;
+			count++;
+			if (node.data.equals(o)) {
+				lastIndexFound = count;
+			}
+		}
+		return lastIndexFound;
 	}
 
 	@Override

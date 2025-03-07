@@ -1,3 +1,4 @@
+import java.util.Date;
 
 public class SavingsAccount extends Account {
 
@@ -24,5 +25,6 @@ public class SavingsAccount extends Account {
 			System.out.println("Cannot withdraw past minimum balance!");
 		}
 		super.setBalance(newBal);
+		super.getTransactions().add(new Transaction(new Date(), 'W', amount, super.getBalance()));
 	}
 }

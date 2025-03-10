@@ -1,8 +1,12 @@
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Song {
 
+	private TimerTask interval;
 	private String artist;
 	private String title;
+	private int length;
 	
 	public Song(String artist, String title) {
 		super();
@@ -10,6 +14,9 @@ public class Song {
 		this.title = title;
 	}
 	
+	public int getLength() {
+		return length;
+	}
 	public String getArtist() {
 		return artist;
 	}
@@ -23,4 +30,9 @@ public class Song {
 		this.title = title;
 	}
 	
+	public void play() {
+		Timer counter = new Timer();
+		counter.schedule(interval, (long) 1000);
+		System.out.println("Playing " + getTitle() + " by " + getArtist());
+	}
 }

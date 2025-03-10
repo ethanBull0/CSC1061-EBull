@@ -44,6 +44,10 @@ public class Main {
 				playlist.add(thisSong);
 				break;
 			case 2:
+				if (playlist.size() <= 1) {
+					System.out.println("Contains one or less elements. Deleting...");
+					playlist.clear();
+				} else {
 				char yourChoice = ' ';
 				String selection = "";
 				System.out.println("select index of song to remove");
@@ -62,6 +66,7 @@ public class Main {
 					e.printStackTrace();
 				} catch (NullPointerException e) {
 					e.printStackTrace();
+				}
 				}
 				break;
 			case 3:
@@ -116,10 +121,21 @@ public class Main {
 				printPlaylist(playlist);
 				break;
 			case 6:
-				System.out.println(playlist.count());
+				try {
+				int amount = playlist.count() + 1;
+				if (playlist.size() == 1) {
+					System.out.println(amount + " song");
+				} else {
+					System.out.println(amount + " songs");
+				}
+				} catch (NullPointerException e) {
+					System.out.println("No songs");
+				}
 				break;
 			case 7:
-				
+				for (Song s : playlist) {
+					
+				}
 				break;
 			case 8:
 				playlist.shuffle();

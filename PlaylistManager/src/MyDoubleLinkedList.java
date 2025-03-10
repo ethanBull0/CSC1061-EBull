@@ -328,7 +328,7 @@ public class MyDoubleLinkedList<E> implements List<E> {
 		}
 		// TODO: classify this and improve it.
 		int i = 0;
-		LinkedList<E> list = new LinkedList<E>(); //LinkedList is imported just to take care of this
+		MyLinkedList<E> list = new MyLinkedList<E>(); //LinkedList is imported just to take care of this
 		for (Node node=head; node != null; node = node.next) {
 			if (i >= fromIndex && i <= toIndex) {
 				list.add(node.data);

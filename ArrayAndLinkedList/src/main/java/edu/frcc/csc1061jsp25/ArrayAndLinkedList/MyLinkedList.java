@@ -1,10 +1,12 @@
 package edu.frcc.csc1061jsp25.ArrayAndLinkedList;
 
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.NoSuchElementException;
 
 import org.w3c.dom.Node;
 
@@ -57,23 +59,30 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public Iterator<T> iterator() {
-		
-		return null;
+		T[] array = (T[]) toArray();
+		return Arrays.asList(array).iterator();
 	}
 
 	@Override
 	public Object[] toArray() {
+		Node node = head;
 		Object[] toArr = new Object[size];
-		for (int i = 0; i < size; i++) {
-			
+		for (int i = 0; i < size && node.next != null; i++) {
+			toArr[i] = node;
+			node = node.next;
 		}
-		return null;
+		return toArr;
 	}
 
 	@Override
 	public <T> T[] toArray(T[] a) {
-		// TODO Auto-generated method stub
-		return null;
+		Node node = head;
+		Object[] toArr = new Object[size];
+		for (int i = 0; i < size && node.next != null; i++) {
+			toArr[i] = node;
+			node = node.next;
+		}
+		return ((T[]) toArr);
 	}
 
 	@Override
@@ -106,12 +115,18 @@ public class MyLinkedList<T> implements List<T> {
 
 	@Override
 	public boolean containsAll(Collection<?> c) {
-		// TODO Auto-generated method stub
-		return false;
+		Node node = head;
+		for (int i = 0; i < size; i++) {
+				if (!(c.contains(node.data))) {
+					return false;
+				}
+			node = node.next;
+		}
+		return true;
 	}
 
 	@Override
-	public boolean addAll(Collection<? extends T> c) {
+	public boolean addAll(Collection<? extends T> c) { //use iterator
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -243,4 +258,33 @@ public class MyLinkedList<T> implements List<T> {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	/* class MyLinkedListIterator implements Iterator<T> {
+
+		Node current = null;
+		
+		@Override
+		public boolean hasNext() {
+			if (current == null && head != null) {
+				return true;
+			} else if (current != null) {
+				return current.next != null;
+			}
+			return false;
+		}
+
+		@Override
+		public T next() {
+			if (current == null) {
+				current = head;
+				return head.data;
+			} else if (current != null){
+				T e = current.data;
+			 current = current.next;
+			 return e;
+			}
+			throw new NoSuchElementException();
+		}
+		
+	} */
 }

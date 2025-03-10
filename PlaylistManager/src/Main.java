@@ -33,6 +33,7 @@ public class Main {
 				choice = scn.nextInt();
 			}
 
+			flush(scn);
 			switch (choice) {
 			case 1:
 				System.out.println("Song artist: ");
@@ -43,27 +44,24 @@ public class Main {
 				playlist.add(thisSong);
 				break;
 			case 2:
+				char yourChoice = ' ';
+				String selection = "";
 				System.out.println("select index of song to remove");
 				int index = scn.nextInt();
 				try {
 					Song delSong = playlist.get(index);
 					System.out.println("are you sure you would like to delete " + delSong.getTitle() + " by "
-							+ delSong.getArtist() + "?");
-					String selection = null;
-					while (selection != "(?i)y" || selection != "(?i)n") {
-						selection = scn.nextLine().substring(0, 2);
-					}
-					switch (selection) {
-					case "(?i)y":
+							+ delSong.getArtist() + "? (y/n):");
+						scn.nextLine();
+						selection = scn.nextLine();
+						yourChoice = selection.charAt(0); //?
+					if (yourChoice == 'Y' || yourChoice == 'y') {
 						playlist.remove(index);
-						break;
-					case "(?i)n":
-						break;
 					}
 				} catch (IndexOutOfBoundsException e) {
-					System.out.println("Cannot find element at index " + index);
+					e.printStackTrace();
 				} catch (NullPointerException e) {
-					System.out.println("Element at index " + index + " appears to be null");
+					e.printStackTrace();
 				}
 				break;
 			case 3:
@@ -74,8 +72,8 @@ public class Main {
 					String line;
 					Song importSong = new Song(null, null);
 					while ((line = reader.readLine()) != null) {
-						String lineImport = line.substring(line.indexOf(":" + 2), line.length() - 1);
-						if (lineImport.charAt(line.indexOf(":") - 1) == ('t')) {
+						String lineImport = line.substring(line.indexOf(':') + 2);
+						if (line.charAt(line.indexOf(":") - 1) == ('t')) { //!
 							importSong.setArtist(lineImport);
 						} else {
 							importSong.setTitle(lineImport);
@@ -83,12 +81,15 @@ public class Main {
 							importSong = new Song(null, null);
 						}
 					}
+					reader.close();
 				} catch (FileNotFoundException e) {
 					System.out.println("Could not find file that matches " + playlistString);
 				} catch (IOException e) {
 					System.out.println("Failed to read from file");
 				} catch (NullPointerException e) {
 					System.out.println("NullPointerException - likely Song object was not intitialized");
+				} catch (StringIndexOutOfBoundsException e) {
+					System.out.println("Out of bounds");
 				}
 				break;
 			case 4:
@@ -96,15 +97,16 @@ public class Main {
 				System.out.println("Enter desired name of your playlist: ");
 				String playlistName = scn.nextLine();
 				try {
-					if (playlistName.substring(playlistName.length() - 5, playlistName.length() - 1).equals(".txt")) {
+					if (playlistName.substring(playlistName.length() - 4, playlistName.length()).equals(".txt")) {
 						writer = new BufferedWriter(new FileWriter(playlistName));
 					} else {
 						writer = new BufferedWriter(new FileWriter(playlistName + ".txt"));
 					}
 					for (Song s : playlist) {
-						writer.write("Artist: " + s.getArtist());
-						writer.write("Song Title: " + s.getTitle());
+						writer.write("Artist: " + s.getArtist() + "\n");
+						writer.write("Song Title: " + s.getTitle() + "\n");
 					}
+					writer.flush();
 				} catch (IOException e) {
 
 				}
@@ -139,5 +141,9 @@ public class Main {
 			System.out.println("Artist: " + s.getArtist());
 			System.out.println("Song Title: " + s.getTitle() + "\n");
 		}
+	}
+	
+	private static void flush(Scanner scn) {
+		String flush = scn.nextLine();
 	}
 }

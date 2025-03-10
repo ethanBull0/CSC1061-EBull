@@ -9,6 +9,8 @@ import java.util.ListIterator;
 import java.util.Random;
 
 
+
+
 /**
  * @author downey
  * @param <E>
@@ -53,6 +55,12 @@ public class MyDoubleLinkedList<E> implements List<E> {
 		head = null;
 		tail = null;        // Doubly
 		size = 0;
+	}
+	
+	public MyDoubleLinkedList(int size) {
+		head = null;
+		tail = null;        // Doubly
+		this.size = size;
 	}
 
 	// IMPLEMENT
@@ -253,10 +261,11 @@ public class MyDoubleLinkedList<E> implements List<E> {
 
 	//IMPLEMENT
 	@Override
-	public E remove(int index) {
-		//TODO: FILL THIS IN!
+	public E remove(int index) { //todo
 		E element = get(index);
-		if (index == 0) {
+		if (size == 1) {
+			clear();
+		} else if (index == 0) {
 			if (tail == head) {
 				tail = null;
 			}
@@ -277,6 +286,13 @@ public class MyDoubleLinkedList<E> implements List<E> {
 		
 		//return null;
 	}
+	
+	private void check(int index) {
+		if (index < 0 || index >= size) {
+			throw new IndexOutOfBoundsException();
+		}
+	}
+	
 
 	@Override
 	public boolean removeAll(Collection<?> collection) {
@@ -362,31 +378,25 @@ public class MyDoubleLinkedList<E> implements List<E> {
 			}
 			
 		} */
-		for (int i = toArr.length - 1; i > 0; i--) {
+		for (int i = toArr.length - 1; i >= 0; i--) {
 			add((E) toArr[i]); //object cast
 		}
 		
 	}
 
-	public void shuffle() {
-		Random ran = new Random();
-		Object[] toArr = toArray();
-		Object[] shuffledArr = new Object[toArr.length];
-		int[] goodVals = new int[toArr.length];
-		clear();
-		for (int i = toArr.length - 1; i > 0; i--) {
-			int randomIndex = (ran.nextInt()) % toArr.length;
-			if (goodVals[randomIndex] == 0) {
-				continue;
-			} else {
-				shuffledArr[i] = toArr[randomIndex];
-				goodVals[randomIndex] = 0;
+	public void shuffle() { //Fisher Yates
+		E temp = null;
+		Random dice = new Random();
+		for (int i = size() - 1; i >= 1; i--) {
+			int diceRoll = dice.nextInt(i);
+			if (!(diceRoll == i)) {
+				temp = this.get(diceRoll);
+				set(diceRoll, get(i));
+				set(i, temp);
 			}
 		}
-		clear();
-		for (Object obj : shuffledArr) {
-			add((E) obj);
-		}
 	}
+	
+	
 	
 }

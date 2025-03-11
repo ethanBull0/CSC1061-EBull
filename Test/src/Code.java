@@ -4,16 +4,35 @@ import java.util.List;
 	
 public class Code {
 	
-public static void main(String[] args) {
-	List<String> list = new ArrayList<>();
-	list.add("A");
-	list.add("B");
-	list.add("C");
-	list.add("D");
-	for (int i = 0; i < list.size(); i++) {
-		System.out.println(list.remove(i));
+	public static void main(String[] args) {
+		new B();
+		}
+}
+	class A {
+		int i = 7;
+		
+		public A() {
+			System.out.println(i);
+		}
+		
+		public void setI(int i) {
+			this.i = 2 * i;
+		}
 	}
-}
+	
+	class B extends A {
+		public B() {
+			//setI(20);
+			//System.out.println(i);
+		}
+		
+		@Override
+		public void setI(int i) {
+			this.i = 3 * i;
+		}
+	}
+		
 
-}
+		
+
 

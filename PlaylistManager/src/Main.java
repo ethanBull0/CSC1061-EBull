@@ -134,7 +134,7 @@ public class Main {
 				break;
 			case 7:
 				for (Song s : playlist) {
-					System.out.println("Playing " + s.getTitle() + " by " + s.getArtist() + ". Press S to skip, or E to exit the player.");
+					System.out.println("Playing " + s.getTitle() + " by " + s.getArtist() + ".");
 					s.play();
 				}
 				break;

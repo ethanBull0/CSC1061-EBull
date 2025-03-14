@@ -52,13 +52,9 @@ public class Song extends TimerTask {
 		if (length == 0) {
 			System.out.println("Length appears not to be intialized!");
 		}
-		ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);
+		Timer counter = new Timer();
 		while (i != length) {
-		//counter.schedule(newTimerTask(), (long) 1000);
-		//counter.schedule(keyboardFuncsTask(counter), (long) 1000); //running too many times?
-			
-	        executor.scheduleAtFixedRate(newTimerTask(), 0, 1, TimeUnit.SECONDS); // Run every 2 seconds
-	        executor.scheduleAtFixedRate(keyboardFuncsTask(executor), 0, 1, TimeUnit.SECONDS); // Run every 3 seconds, starting after 1 second
+		counter.schedule(newTimerTask(), (long) 1000);
 		
 		try {
 			Thread.sleep(1000);
@@ -67,7 +63,7 @@ public class Song extends TimerTask {
 		}
 		
 		}
-		executor.shutdown();
+		counter.cancel();
 	}
 	
 	private TimerTask newTimerTask() {
@@ -81,26 +77,13 @@ public class Song extends TimerTask {
 			}
 		};
 	}
-	
-	private TimerTask keyboardFuncsTask(ScheduledExecutorService exec) {
-		Scanner scan = new Scanner(System.in);
-		return new TimerTask() {
-			@Override
-			public void run() {
-				if (scan.nextLine().equals("S") || scan.nextLine().equals("s")) {
-					i = length;
-				} else if (scan.nextLine().equals("E") || scan.nextLine().equals("e")) {
-					exec.shutdown();
-				}
-			}
-		};
-	}
+
 
 	@Override
 	public void run() {
 		  if (i < length) {
 			System.out.println(i / 60 + ":" + i % 60 + " " + length / 60 + ":" + length % 60);
 		}
-		i++;
+		//i++;
 	}
 }

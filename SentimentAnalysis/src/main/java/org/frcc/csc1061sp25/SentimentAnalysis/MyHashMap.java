@@ -1,9 +1,15 @@
+package org.frcc.csc1061sp25.SentimentAnalysis;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
-
+/*
+ * Sentiment Analysis' version of MyHashMap
+ * Implements load factor to rehash table 
+ * Rehashes upon size doubling
+ */
 public class MyHashMap<K, V> implements Map<K, V> {
 	
 	public static final int INITIAL_NUM_BUCKETS = 4;
@@ -98,6 +104,23 @@ public class MyHashMap<K, V> implements Map<K, V> {
 		return buckets.length;
 	}
 	
+	private void rehash() { /* part 1 */
+		double ratio = 0.0;
+		int numBuckets = INITIAL_NUM_BUCKETS;
+		double loadFactor = size / buckets.length;
+		if (ratio >= loadFactor) {
+			LinkedList<Entry<K, V>>[] newBuckets = new LinkedList[numBuckets *= 2];
+			LinkedList<Entry<K, V>>[] oldBuckets = buckets;
+			buckets = newBuckets;
+			for (LinkedList<Entry<K, V>> bucket : oldBuckets) {
+				for (int i = 0; i < bucket.size(); i++) {
+				 put(bucket.get(i).getKey(), bucket.get(i).getValue());
+				}
+			}
+		}
+		
+	}
+	
 	@Override
 	public V put(K key, V value) {
 		int bucketIndex = Math.abs(key.hashCode()) % buckets.length;
@@ -125,7 +148,6 @@ public class MyHashMap<K, V> implements Map<K, V> {
 		return null;
 	}
 	
-	//private void rehash();
 
 	@Override
 	public V remove(Object key) { /* dont remove while traversing */

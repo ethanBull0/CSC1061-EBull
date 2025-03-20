@@ -25,22 +25,22 @@ public class App
     	} catch (IOException e) {
     		System.out.println("Could not create " + fileName);
     	}
-        HashMap<Integer, String> words = new HashMap<Integer, String>();
+        HashMap<String, Integer> words = new HashMap<String, Integer>();
         try {
-        	Pattern scorePattern = Pattern.compile("-?\\b([0-5])\\b"); //matches integer values -5 to 5, avoids bogus data
+        	//Pattern scorePattern = Pattern.compile("-?\\b([0-5])\\b"); //matches integer values -5 to 5, avoids bogus data
         	
-        	Matcher matcher = null;
+        	/*Matcher matcher = null; */
         	FileReader wordRead = new FileReader(sentFile);
-        	BufferedReader reader = new BufferedReader(wordRead);
+        	BufferedReader reader = new BufferedReader(wordRead); 
         	String thisLine = "";
 			while ((thisLine = reader.readLine()) != null) {
-	        	matcher = scorePattern.matcher(thisLine);
-	        	Integer score = Integer.parseInt(matcher.group());
+	        	//matcher = scorePattern.matcher(thisLine);
+	        	Integer score = Integer.parseInt(thisLine.substring(thisLine.length() - 2, thisLine.length()));
 	        	if (!thisLine.contains(",")) {
 	        		System.out.println("Ran into an import issue, stopped importing");
 	        	}
 	        	String word = thisLine.substring(0, thisLine.indexOf(','));
-	        	words.put(score, word);
+	        	words.put(word, score);
 	        }
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -53,15 +53,22 @@ public class App
         String userSentence = scn.nextLine();
         String[] sentence = userSentence.replaceAll("[^a-zA-Z ]", "").toLowerCase().split("\\s+");
         System.out.println("Words: " + sentence.length);
-        int sentiment = generateScore(sentence);
+        int sentiment = generateScore(sentence, words);
         System.out.println("Sentiment: " + sentiment);
         System.out.println("Overall: " + (sentiment / sentence.length));
         
         
     }
     
-    public static int generateScore(String[] str) {
-    	
-    	return 0;
+    public static int generateScore(String[] str, HashMap<String, Integer> words) {
+    	int total = 0;
+    	for (String s : str) {
+    		if (words.containsKey(s)) {
+    			total += words.get(s);
+    		}
+    	}
+    	return total;
     }
+    
+    
 }

@@ -123,6 +123,7 @@ public class MyHashMap<K, V> implements Map<K, V> {
 	
 	@Override
 	public V put(K key, V value) {
+		rehash();
 		int bucketIndex = Math.abs(key.hashCode()) % buckets.length;
 		LinkedList<Entry<K, V>> bucket = buckets[bucketIndex];
 		

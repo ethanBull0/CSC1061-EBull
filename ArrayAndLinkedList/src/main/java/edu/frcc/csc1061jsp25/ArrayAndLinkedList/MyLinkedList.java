@@ -57,10 +57,33 @@ public class MyLinkedList<T> implements List<T> {
 		return false;
 	}
 
+	private class MyIterator implements Iterator<T> {
+
+		Node node = head;
+		
+		@Override
+		public boolean hasNext() {
+			if (node != null) {
+				return true;
+			}
+			return false;
+		}
+
+		@Override
+		public T next() {
+			T element = node.data;
+			node = node.next;
+			return element;
+		}
+		
+	}
+	
+	
 	@Override
 	public Iterator<T> iterator() {
-		T[] array = (T[]) toArray();
-		return Arrays.asList(array).iterator();
+		//T[] array = (T[]) toArray();
+		//return Arrays.asList(array).iterator();
+		return new MyIterator();
 	}
 
 	@Override

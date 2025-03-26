@@ -64,7 +64,11 @@ public class App
     	int total = 0;
     	for (String s : str) {
     		if (words.containsKey(s)) {
-    			total += words.get(s);
+    			if (words.get(s) >= 0) {
+    				total += words.get(s);
+    			} else {
+    				total -= words.get(s);
+    			}
     		}
     	}
     	return total;

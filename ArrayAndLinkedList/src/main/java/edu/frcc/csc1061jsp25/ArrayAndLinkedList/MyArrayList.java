@@ -44,10 +44,34 @@ public class MyArrayList<T> implements List<T>{
 		return false;
 	}
 
+	private class MyIterator implements Iterator<T> {
+
+		int index = 0;
+		
+		
+		@Override
+		public boolean hasNext() {
+			if (index > -1 && index < size) {
+				return true;
+			}
+			return false;
+		}
+
+		@Override
+		public T next() {
+			if (index < 0 || index > size) {
+				throw new IndexOutOfBoundsException();
+			}
+			T element = array[index];
+			index++;
+			return element;
+		}
+		
+	}
+	
 	@Override
 	public Iterator<T> iterator() {
-		// TODO Auto-generated method stub
-		return null;
+		return new MyIterator();
 	}
 
 	@Override

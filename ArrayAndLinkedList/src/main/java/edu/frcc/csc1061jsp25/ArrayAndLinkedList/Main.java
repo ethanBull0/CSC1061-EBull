@@ -16,9 +16,8 @@ public class Main
        m1.add(5);
        m1.add(6);
        
-       for (int i = 0; i < m1.size(); i++) {
-    	   int num = m1.get(i);
-    	   System.out.print(num);
+       for (Integer m : m1) {
+    	   System.out.print(m);
        }
        System.out.println();
        

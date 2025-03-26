@@ -1,4 +1,4 @@
-package edu.frcc.csc1061j.GettingToPhilosophy;
+package edu.frcc.csc1061jsp25.GettingToPhilosophy;
 
 import java.io.IOException;
 import java.util.ArrayList;

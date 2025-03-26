@@ -1,4 +1,4 @@
-package edu.frcc.csc1061j.GettingToPhilosophy;
+package edu.frcc.csc1061jsp25.GettingToPhilosophy;
 
 /**
  * 

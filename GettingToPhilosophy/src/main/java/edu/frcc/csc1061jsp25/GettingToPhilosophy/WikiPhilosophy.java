@@ -4,7 +4,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jsoup.*;
+import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 
 public class WikiPhilosophy {
@@ -26,6 +29,7 @@ public class WikiPhilosophy {
      * @throws IOException
      */
     public static void main(String[] args) throws IOException {
+    	System.out.println("Hello!");
         String destination = "https://en.wikipedia.org/wiki/Philosophy";
         String source = "https://en.wikipedia.org/wiki/Java_(programming_language)";
 

@@ -60,17 +60,30 @@ public class App
 			e.printStackTrace();
 		}
         System.out.println("Word register successfully initiated!");
-        System.out.println("Would you like to\n1)Add a word to the dictionary\n2)Evaluate a word\n3)Exit");
-        choice = new Scanner(System.in).nextInt();
+       Scanner intScan = new Scanner(System.in);
+        choice = 0;
         while (choice != 3) {
+        	System.out.println("\nWould you like to\n1)Add a word to the dictionary\n2)Evaluate a word\n3)Exit");
+        	choice = intScan.nextInt();
 	        if (choice == 1) {
 	        	System.out.println("Enter your word: ");
 	        		String wordChoice = new Scanner(System.in).nextLine();
 	        	System.out.println("Enter your word's rating on a scale of -5 to 5");
 	        	int scoreChoice = 0;
-	        	while (scoreChoice >= -5 || scoreChoice <= 5) {
 	        	scoreChoice = new Scanner(System.in).nextInt();
+	        	if (scoreChoice >= -5 || scoreChoice <= 5) {
 	        	words.put(wordChoice, scoreChoice);
+	        	try {
+					FileWriter writer = new FileWriter(sentFile);
+					writer.write(wordChoice + "," + scoreChoice);
+					writer.flush();
+					writer.close();
+				} catch (IOException e) {
+					System.out.println("Failed to add your word to " + fileName);
+				}
+	        	} else {
+	        		System.out.println("Invalid rating, please enter again.");
+	        		
 	        	}
 	        } else if (choice == 2) {
 	        System.out.println("Enter your text: ");

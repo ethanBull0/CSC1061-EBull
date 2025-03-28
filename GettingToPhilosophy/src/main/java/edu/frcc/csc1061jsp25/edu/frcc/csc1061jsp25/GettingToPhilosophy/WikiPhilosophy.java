@@ -1,6 +1,7 @@
 package edu.frcc.csc1061jsp25.GettingToPhilosophy;
 
 import java.io.IOException;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +9,9 @@ import org.jsoup.*;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
+import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
+import org.apache.commons.lang3.StringUtils;
 
 public class WikiPhilosophy {
 
@@ -44,6 +47,10 @@ public class WikiPhilosophy {
      * @throws IOException
      */
     public static void testConjecture(String destination, String source, int limit) throws IOException {
+    	if (source.equals(destination)) {
+    		System.out.println("Found philosophy! Woot!");
+    		System.exit(1);
+    	}
         Document doc = null;
         Connection conn = Jsoup.connect(source);
         try 
@@ -62,8 +69,49 @@ public class WikiPhilosophy {
         Elements paragraphs = content.select("p");
 
         for (Element para : paragraphs) {
+        	int parenLevel = 0;
             Iterable<Node> iter = new WikiNodeIterable(para);
+
             for (Node node : iter) {
+            	String useMe = "https://en.wikipedia.org";
+            	//It seems that element nodes specifically contain href, thus TextNode objects are not useful here
+            	if (node instanceof Element) {
+                    int openPar = StringUtils.countMatches(node.toString(), "(");
+            		int closedPar = StringUtils.countMatches(node.toString(), ")");
+            		int level = openPar - closedPar;
+            		if (level >= 0) {
+            			parenLevel += level;
+            		} else {
+            			parenLevel -= Math.abs(level);
+            		}
+            		if (node.attributes().hasKey("href")) {
+            			if (node.attributes().get("href").charAt(0) != '#') {
+            			useMe += node.attributes().get("href");
+            			testConjecture(destination, useMe, 10);
+            			}
+            		}
+            	}
+            	/* Implementation using strings
+            	 * 
+            	 
+                if (node instanceof TextNode) {
+                	//System.out.println("This node: ");
+                	//System.out.println(node.toString());
+                	//System.out.println("This node END");
+                } else if (node instanceof Element) {
+                	System.out.println("This element node: ");
+                	String nodeToString = node.toString();
+                	System.out.println(nodeToString);
+                	if (nodeToString.contains("<a href=")) {
+                		String containsLink = nodeToString.substring(nodeToString.indexOf("<a href=") + 9);
+                		int start = nodeToString.indexOf("=\"") + 2;
+                		useMe += containsLink.substring(0, containsLink.indexOf(" ") - 1);
+                	System.out.println("This node END");
+                	System.out.println("Found page " + useMe);
+                    testConjecture(destination, useMe, 10);
+                    System.out.println("Couldn't find " + destination + "with depth " + limit + ".");
+                	}
+                } */
                 
                 // TODO: FILL THIS IN!
             	// If this node is a text node make sure you are not within parentheses
@@ -73,7 +121,7 @@ public class WikiPhilosophy {
             	// If the link is not null and not an empty string and does not start with a # sign 
             	// and is not within parentheses, follow the link recursively by calling testConjecture() 
             	// until you reach your objective or run past the limit. 
-            }
+            } 
 
         }
     }

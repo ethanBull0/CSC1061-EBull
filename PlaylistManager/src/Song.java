@@ -8,7 +8,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 
-public class Song extends TimerTask {
+public class Song {
 
 	private Random rand = new Random();
 	private int i = 0;
@@ -79,7 +79,6 @@ public class Song extends TimerTask {
 	}
 
 
-	@Override
 	public void run() {
 		  if (i < length) {
 			System.out.println(i / 60 + ":" + i % 60 + " " + length / 60 + ":" + length % 60);

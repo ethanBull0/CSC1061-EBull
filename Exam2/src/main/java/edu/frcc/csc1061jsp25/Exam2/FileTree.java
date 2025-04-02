@@ -2,8 +2,11 @@ package edu.frcc.csc1061jsp25.Exam2;
 
 import java.io.File;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Queue;
 
 
@@ -11,6 +14,7 @@ import java.util.Queue;
 public class FileTree implements Iterable <FileNode> {
 
 	private FileNode root;
+	
 	
 	public FileTree(String path) {
 		root = new FileNode(path);
@@ -36,12 +40,17 @@ public class FileTree implements Iterable <FileNode> {
 	 * 
 	 * @param fileNode
 	 */
-	private void buildTree(FileNode fileNode) {
-		for (File c : fileNode.getFile().listFiles()) {
-			buildTree(new FileNode(c));
-			//adding the children first
-			fileNode.getChildNodes().add(fileNode);
+	private void buildTree(FileNode fileNode) { //?
+		if (fileNode.getFile().isDirectory()) {
+			buildTree(fileNode.getChildNodes().getFirst());
+			ArrayList<FileNode> thisDir = new ArrayList<>();
+			fileNode.setChildNodes(thisDir);
+		} else {
+			
 		}
+		fileNode.setChildNodes(null);
+		
+		
 	
 	}
 	
@@ -56,18 +65,32 @@ public class FileTree implements Iterable <FileNode> {
 	 */
 	private class DepthFirstIterator implements Iterator<FileNode> {
 		
+		FileNode current = root;
+		Deque<FileNode> stack;
+		Deque<FileNode> storeStack;
+		
 		public DepthFirstIterator() {
-
+			stack = new ArrayDeque<>();
+			stack.push(root);
 		}
 
 		@Override
 		public boolean hasNext() {
-			return true;
+			return !stack.isEmpty();
 		}
 		
 		@Override
 		public FileNode next() {
-			return null;
+			FileNode node = stack.pop();
+			storeStack.push(node);
+			List<FileNode> children = node.getChildNodes();
+			List<FileNode> childrenCopy = new ArrayList<>(children);
+			Collections.reverse(childrenCopy);
+			for (FileNode child : childrenCopy) {
+				stack.push(child);
+			}
+			
+			return node;
 		}
 	}
 	
@@ -90,7 +113,7 @@ public class FileTree implements Iterable <FileNode> {
 	private class BreadthFirstIterator implements Iterator<FileNode> {
 		
 		public BreadthFirstIterator() {
-
+				
 		}
 		
 		@Override

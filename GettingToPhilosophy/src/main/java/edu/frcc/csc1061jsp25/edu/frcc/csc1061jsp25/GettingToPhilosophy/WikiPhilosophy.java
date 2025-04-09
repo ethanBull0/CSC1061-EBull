@@ -87,7 +87,9 @@ public class WikiPhilosophy {
             		if (node.attributes().hasKey("href")) {
             			if (node.attributes().get("href").charAt(0) != '#') {
             			useMe += node.attributes().get("href");
-            			testConjecture(destination, useMe, 10);
+            			testConjecture(destination, useMe, limit - 1);
+            			System.out.println("Did not find philosophy :(\nExiting");
+            			System.exit(1);
             			}
             		}
             	}

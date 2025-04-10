@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
@@ -42,13 +43,18 @@ public class FileTree implements Iterable <FileNode> {
 	 */
 	private void buildTree(FileNode fileNode) { //?
 		if (fileNode.getFile().isDirectory()) {
-			buildTree(fileNode.getChildNodes().getFirst());
-			ArrayList<FileNode> thisDir = new ArrayList<>();
-			fileNode.setChildNodes(thisDir);
+			File[] files = fileNode.getFile().listFiles();
+			ArrayList<FileNode> fileList = new ArrayList<>();
+			for (File f : files) {
+				FileNode fNode = new FileNode(f);
+				fileList.add(fNode);
+				buildTree(fNode);
+			}
+				fileNode.setChildNodes(fileList);
+			
 		} else {
 			
 		}
-		fileNode.setChildNodes(null);
 		
 		
 	
@@ -66,8 +72,8 @@ public class FileTree implements Iterable <FileNode> {
 	private class DepthFirstIterator implements Iterator<FileNode> {
 		
 		FileNode current = root;
-		Deque<FileNode> stack;
-		Deque<FileNode> storeStack;
+		Deque<FileNode> stack = new ArrayDeque<FileNode>();
+		Deque<FileNode> storeStack = new ArrayDeque<FileNode>();
 		
 		public DepthFirstIterator() {
 			stack = new ArrayDeque<>();
@@ -81,16 +87,19 @@ public class FileTree implements Iterable <FileNode> {
 		
 		@Override
 		public FileNode next() {
-			FileNode node = stack.pop();
-			storeStack.push(node);
-			List<FileNode> children = node.getChildNodes();
+			storeStack.push(current); //!
+			if (!(stack.isEmpty())) {
+				current = stack.pop();
+			}
+			
+			List<FileNode> children = current.getChildNodes();
 			List<FileNode> childrenCopy = new ArrayList<>(children);
 			Collections.reverse(childrenCopy);
 			for (FileNode child : childrenCopy) {
 				stack.push(child);
 			}
 			
-			return node;
+			return current;
 		}
 	}
 	
@@ -112,18 +121,24 @@ public class FileTree implements Iterable <FileNode> {
 	 */
 	private class BreadthFirstIterator implements Iterator<FileNode> {
 		
+		FileNode current = root;
+		Queue<FileNode> stack;
+		
 		public BreadthFirstIterator() {
-				
+			stack = new LinkedList<>();
+			stack.add(root);
 		}
 		
 		@Override
 		public boolean hasNext() {
-			return true;
+			return !stack.isEmpty();
 		}
 
 		@Override
 		public FileNode next() {
-			return null;
+			current = stack.poll();
+			stack.addAll(current.getChildNodes());
+			return current;
 		}
 		
 	}

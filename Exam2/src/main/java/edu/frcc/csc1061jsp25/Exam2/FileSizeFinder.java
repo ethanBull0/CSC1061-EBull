@@ -7,7 +7,7 @@ public class FileSizeFinder {
 
 	public static void main(String[] args) {
 
-		String filePath = "C:\\Users\\spiri\\Downloads\\FileSizeTest";
+		String filePath = "C:\\\\Users\\\\spiri\\\\Downloads\\\\FileSizeTest";
 		
 		File file = new File(filePath);
 		

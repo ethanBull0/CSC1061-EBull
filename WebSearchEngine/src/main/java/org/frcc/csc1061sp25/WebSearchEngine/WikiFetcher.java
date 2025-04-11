@@ -1,4 +1,4 @@
-package org.frcc.csc1061sp25.WebSearchEngine;
+package main.java.org.frcc.csc1061sp25.WebSearchEngine;
 
 import java.io.File;
 import java.io.IOException;

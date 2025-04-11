@@ -1,9 +1,8 @@
-package org.frcc.csc1061sp25.WebSearchEngine;
+package main.java.org.frcc.csc1061sp25.WebSearchEngine;
 
 import java.io.IOException;
 import java.util.Map;
-
-
+import java.util.Set;
 import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -16,7 +15,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
-import org.apache.commons.lang3.StringUtils;
+
 
 public class TermCounter {
 
@@ -26,6 +25,10 @@ public class TermCounter {
 	public TermCounter(String url) {
 		this.url = url;
 		this.map = new HashMap<>();
+	}
+	
+	public Set<String> getKeySet() {
+		return map.keySet();
 	}
 	
 	public String getLabel() {

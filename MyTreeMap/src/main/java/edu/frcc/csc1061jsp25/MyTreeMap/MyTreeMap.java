@@ -122,14 +122,57 @@ public class MyTreeMap<K, V> implements Map<K, V>, Iterable<V> {
 	//homework
 	@Override
 	public V remove(Object key) {
+		Node remNode = new Node((K)key, get(key));
+		Deque<V> useNodes = new ArrayDeque<>();
+		useNodes.push(root.value);
 		V value = get(key);
-		Node findNode = new Node((K)key, value);
-		RecursiveIterator ri = new RecursiveIterator();
-		while (ri.hasNext()) {
-			if (ri.next().equals(findNode)) {
-				
+		
+		Node searchNode = root;
+		Node parentNode = new Node(null, null);
+		Comparable<K> k = (Comparable<K>) searchNode.key;
+		while (searchNode != remNode) {
+			parentNode = searchNode;
+			if (k.compareTo((K) key) < 0) {
+				searchNode = searchNode.left;
+			} else if (k.compareTo((K) key) > 0) {
+				searchNode = searchNode.right;
 			}
 		}
+		if (searchNode.left.equals(null) && searchNode.right.equals(null)) {
+			V oldVal = searchNode.value;
+			searchNode = null;
+			return oldVal;
+		}
+		else if (!(searchNode.left.equals(null)) && !(searchNode.right.equals(null))) {
+			
+		} 
+		else if (searchNode.left.equals(null)) {
+		
+		}
+	else if (searchNode.right.equals(null)) {
+		
+		}
+		
+		
+		
+		
+		/*while (ri.hasNext()) {
+			useNodes.push(ri.next());
+			V testcase = useNodes.pop();
+			V parentVal = useNodes.pop();
+			useNodes.push(testcase);
+			if (testcase.equals(value)) {
+				
+				if (myNode.left.equals(null) && myNode.right.equals(null)) { //case I
+					myNode = null;
+				} else if (!(myNode.left.equals(null) && !(myNode.right.equals(null)))) { //case II.  
+					
+				} else if (!(myNode.left.equals(null) || !(myNode.right.equals(null)))) { //case III Parent node = child node, child node = null
+					myParent = myNode;
+					myNode = null;
+				}
+			}
+		} */
 		
 		return null;
 	}

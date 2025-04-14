@@ -82,6 +82,46 @@ public class MyTreeMap<K, V> implements Map<K, V>, Iterable<V> {
 		}
 		return null;
 	}
+	
+	public Node getNode(Object key) {
+		Node current = root;
+		Comparable<K> k = (Comparable<K>) key;
+		
+		while(current != null) {
+			if (k.compareTo(current.key) < 0) {
+				current = current.left;
+			} else if (k.compareTo(current.key) > 0) {
+				current = current.right;
+			} else {
+				return current;
+			}
+		}
+		return null;
+	}
+	
+	public Node getParentNode(Node n) {
+		Deque<Node> stack = new LinkedList<>();
+		Node current = root;
+		stack.push(root);
+		Comparable<K> k  = (Comparable<K>) n.key;
+		while(current != null) {
+			if (k.compareTo(current.key) < 0) {
+				current = current.left;
+			} else if (k.compareTo(current.key) > 0) {
+				current = current.right;
+			} else {
+				if (stack.size() >= 2) {
+				stack.pop();
+				return stack.pop();
+				} else {
+					return stack.pop();
+				}
+			}
+			stack.push(current);
+		}
+		return null;
+		
+	}
 
 	@Override
 	public V put(K key, V value) {
@@ -120,61 +160,101 @@ public class MyTreeMap<K, V> implements Map<K, V>, Iterable<V> {
 	}
 
 	//homework
-	@Override
 	public V remove(Object key) {
-		Node remNode = new Node((K)key, get(key));
-		Deque<V> useNodes = new ArrayDeque<>();
-		useNodes.push(root.value);
-		V value = get(key);
-		
-		Node searchNode = root;
-		Node parentNode = new Node(null, null);
-		Comparable<K> k = (Comparable<K>) searchNode.key;
-		while (searchNode != remNode) {
-			parentNode = searchNode;
-			if (k.compareTo((K) key) < 0) {
-				searchNode = searchNode.left;
-			} else if (k.compareTo((K) key) > 0) {
-				searchNode = searchNode.right;
-			}
+		if (!containsKey(key)) {
+			return null;
 		}
-		if (searchNode.left.equals(null) && searchNode.right.equals(null)) {
-			V oldVal = searchNode.value;
-			searchNode = null;
+		
+		//Comparable<K> k = (Comparable<K>) key;
+		Node searchNode = getNode(key);
+		Node parentNode = getParentNode(searchNode);
+		
+		V oldVal = searchNode.value;
+		if (searchNode.left == null && searchNode.right == null) {
+			if (((Comparable<K>) searchNode.key).compareTo(parentNode.key) < 0) {
+			parentNode.left = null;
+			} else if (((Comparable<K>) searchNode.key).compareTo(parentNode.key) > 0) {
+				parentNode.right = null;
+			}
 			return oldVal;
 		}
-		else if (!(searchNode.left.equals(null)) && !(searchNode.right.equals(null))) {
-			
-		} 
-		else if (searchNode.left.equals(null)) {
-		
-		}
-	else if (searchNode.right.equals(null)) {
-		
-		}
-		
-		
-		
-		
-		/*while (ri.hasNext()) {
-			useNodes.push(ri.next());
-			V testcase = useNodes.pop();
-			V parentVal = useNodes.pop();
-			useNodes.push(testcase);
-			if (testcase.equals(value)) {
-				
-				if (myNode.left.equals(null) && myNode.right.equals(null)) { //case I
-					myNode = null;
-				} else if (!(myNode.left.equals(null) && !(myNode.right.equals(null)))) { //case II.  
-					
-				} else if (!(myNode.left.equals(null) || !(myNode.right.equals(null)))) { //case III Parent node = child node, child node = null
-					myParent = myNode;
-					myNode = null;
+		else if (!(searchNode.left == null) && !(searchNode.right == null)) {
+			Node remNode = inOrderPredecessor(searchNode);
+			if (((Comparable<K>) searchNode.key).compareTo(parentNode.key) < 0) {
+				parentNode.left.value = remNode.value;
+				parentNode.left.key = remNode.key;
+				} else if (((Comparable<K>) searchNode.key).compareTo(parentNode.key) > 0) {
+					parentNode.right.value = remNode.value;
+					parentNode.right.key = remNode.key;
 				}
-			}
-		} */
+			remNode = null;
+			return oldVal;
+		}
+		else if (searchNode.left == null) {
+		searchNode.value = searchNode.right.value;
+		searchNode.key = searchNode.right.key;
+		searchNode.right = null;
+		return oldVal;
+		}
+	else if (searchNode.right == null) {
+		searchNode.value = searchNode.left.value;
+		searchNode.key = searchNode.left.key;
+		searchNode.left = null;
+		return oldVal;
+		}
 		
 		return null;
+	}
+	
+	public Node inOrderPredecessor(Node sNode) {
+		Node theRoot = sNode;
+		Node parent = sNode;
+		if (sNode.left != null) {
+			parent = sNode;
+			sNode = sNode.left;
+		}
+		if (sNode.right == null) {
+			if (!(parent.left.left == null)) {
+				parent.left = sNode.left;
+				parent.value = sNode.value;
+				parent.key = sNode.key;
+			}
+			sNode = null;
+			return parent;
+		}
+		while (sNode.right != null) {
+			parent = sNode;
+			sNode = sNode.right;
+		}
+		
+		Node oldNode = sNode;
+		parent = oldNode;
+		parent.left = sNode.left;
+		
+		if (theRoot == root) { //!todo
+			root.left = sNode.left;
+			root.value = sNode.value;
+			root.key = sNode.key;
+		}
+		sNode = null;
+		return parent;
+	}
+	
+	public int inOrderDepth(Node sNode) {
+		int thisRoot = 0;
+		if (sNode.left != null) {
+			sNode = sNode.left;
+			thisRoot++;
+		}
+		if (sNode.right == null) {
+			thisRoot++;
+			return thisRoot;
+		}
+		while (sNode.right.right != null) {
+			sNode = sNode.right;
+			thisRoot++;
+		}
+		return thisRoot;
 	}
 
 	@Override

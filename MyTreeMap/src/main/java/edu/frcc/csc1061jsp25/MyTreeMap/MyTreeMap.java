@@ -228,16 +228,15 @@ public class MyTreeMap<K, V> implements Map<K, V>, Iterable<V> {
 		}
 		
 		Node oldNode = sNode;
-		parent = oldNode;
-		parent.left = sNode.left;
+		
 		
 		if (theRoot == root) { //!todo
-			root.left = sNode.left;
 			root.value = sNode.value;
 			root.key = sNode.key;
+			parent.right = null;
 		}
 		sNode = null;
-		return parent;
+		return oldNode;
 	}
 	
 	public int inOrderDepth(Node sNode) {

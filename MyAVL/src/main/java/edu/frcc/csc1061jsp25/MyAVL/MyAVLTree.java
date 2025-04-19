@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
-public class MyAVLTree<K, V> implements Map<K, V>, Iterable<V> {
+public class MyAVLTree<K, V> implements Map<K, V>, Iterable<edu.frcc.csc1061jsp25.MyAVL.MyAVLTree.Node> {
 
 	private Node root = null;
 	private int size = 0;
@@ -477,12 +477,12 @@ public class MyAVLTree<K, V> implements Map<K, V>, Iterable<V> {
 	}
 
 	@Override
-	public Iterator<V> iterator() {
+	public Iterator<edu.frcc.csc1061jsp25.MyAVL.MyAVLTree.Node> iterator() {
 		// TODO Auto-generated method stub
 		return new NonRecursiveIterator();
 	}
 	
-	private class NonRecursiveIterator implements Iterator<V> {
+	private class NonRecursiveIterator implements Iterator<edu.frcc.csc1061jsp25.MyAVL.MyAVLTree.Node> {
 		
 		private Deque<Node> stack = new ArrayDeque<>();
 		
@@ -496,11 +496,10 @@ public class MyAVLTree<K, V> implements Map<K, V>, Iterable<V> {
 		}
 
 		@Override
-		public V next() {
+		public edu.frcc.csc1061jsp25.MyAVL.MyAVLTree.Node next() {
 			Node node = stack.pop();
-			V value = node.value;
 			pushOnStack(node.right); //push right node, then everything to the left
-			return value;
+			return node;
 			
 		}
 		

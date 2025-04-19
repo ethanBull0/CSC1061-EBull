@@ -324,7 +324,29 @@ public class MyAVLTree<K, V> implements Map<K, V>, Iterable<V> {
 	}
 	
 	private void balanceRL(Node node, Node parent) {
+		Node ggp = parent;
+		Node gp = node;
+		Node par = gp.right;
+		Node ch = par.left;
+		if (gp == root) {
+			root = ch;
+		}
+		else {
+			if (ggp.right == par) {
+				ggp.right = ch;
+			} else {
+				ggp.left = ch;
+			}
+		}
 		
+		par.left = ch.right;
+		gp.right = ch.left;
+		
+		ch.right = par;
+		ch.left = gp;
+		updateHeight(gp);
+		updateHeight(par);
+		updateHeight(ch);
 	}
 	
 	//homework

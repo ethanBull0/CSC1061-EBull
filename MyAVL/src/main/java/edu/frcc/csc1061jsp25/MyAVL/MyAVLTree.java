@@ -9,11 +9,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Set;
 
 public class MyAVLTree<K, V> implements Map<K, V>, Iterable<edu.frcc.csc1061jsp25.MyAVL.MyAVLTree.Node> {
-
 	private Node root = null;
 	private int size = 0;
 	private List<Node> path = new ArrayList<>();
@@ -21,8 +19,15 @@ public class MyAVLTree<K, V> implements Map<K, V>, Iterable<edu.frcc.csc1061jsp2
 	protected class Node {
 		private K key;
 		private V value;
-		private Node left;
-		private Node right;
+		private Node left = null;
+		private Node right = null;
+		private int height;
+		
+		public Node(K key, V value) {
+			this.key = key;
+			this.value = value;
+		}
+
 		public K getKey() {
 			return key;
 		}
@@ -62,13 +67,88 @@ public class MyAVLTree<K, V> implements Map<K, V>, Iterable<edu.frcc.csc1061jsp2
 		public void setHeight(int height) {
 			this.height = height;
 		}
+	}
 
-		private int height;
+	@Override
+	public Iterator iterator() {
+		return new RecursiveIterator();
+	}
+	
+	private class RecursiveIterator implements Iterator<Node> {
+
+		private List<Node> list = new LinkedList<>();
 		
-		public Node(K key, V value) {
-			this.key = key;
-			this.value = value;
+		public RecursiveIterator() {
+			inorder(root);
 		}
+		
+		private void inorder(Node node) {
+			if (node == null) {
+				return;
+			}
+			inorder(node.left);
+			list.add(node);
+			inorder(node.right);
+		}
+			
+//		private void preorder(Node node) {
+//			if (node == null) {
+//				return;
+//			}
+//			list.add(node.value);
+//			preorder(node.left);
+//			preorder(node.right);
+//		}
+//	
+//		private void postorder(Node node) {
+//			if (node == null) {
+//				return;
+//			}
+//			postorder(node.left);
+//			postorder(node.right);
+//			list.add(node.value);
+//		}
+		
+		@Override
+		public boolean hasNext() {
+			return !list.isEmpty();
+		}
+
+		@Override
+		public Node next() {
+			return list.remove(0);
+		}
+		
+	}
+
+	private class NonRecursiveIterator implements Iterator<V> {
+		private Deque<Node> stack = new ArrayDeque<>();
+		
+		public NonRecursiveIterator() {
+			pushOnStack(root);
+		}
+		
+		public void pushOnStack(Node node) {
+			Node current = node;
+			while (current != null) {
+				stack.push(current);
+				current = current.left;
+			}
+		}
+		
+		@Override
+		public boolean hasNext() {
+			return !stack.isEmpty();
+		}
+
+		@Override
+		public V next() {
+			Node node = stack.pop();
+			V value = node.value;
+			pushOnStack(node.right);
+			return value;
+		}
+		
 	}
 	
 	@Override
@@ -83,24 +163,7 @@ public class MyAVLTree<K, V> implements Map<K, V>, Iterable<edu.frcc.csc1061jsp2
 
 	@Override
 	public boolean containsKey(Object key) {
-		/*Node current = root;
-		Comparable<K> k = (Comparable<K>) key;
-		while (current != null) {
-			if (current.left.equals(key)) {
-				return true;
-			}
-			current = current.left;
-		}
-		current = root;
-		while (current != null) {
-			if (current.right.equals(key)) {
-				return true;
-			}
-		}
-		return root.equals(key); */
-		if (get(key) != null) {
-			return true;
-		} 
+		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -116,55 +179,18 @@ public class MyAVLTree<K, V> implements Map<K, V>, Iterable<edu.frcc.csc1061jsp2
 		Comparable<K> k = (Comparable<K>) key;
 		
 		while(current != null) {
-			if (k.compareTo(current.key) < 0) {
+			if (k.compareTo(current.key) < 0 ) {
 				current = current.left;
-			} else if (k.compareTo(current.key) > 0) {
+			}
+			else if (k.compareTo(current.key) > 0) {
 				current = current.right;
-			} else {
+			}
+			else {
 				return current.value;
 			}
 		}
-		return null;
-	}
-	
-	public Node getNode(Object key) {
-		Node current = root;
-		Comparable<K> k = (Comparable<K>) key;
 		
-		while(current != null) {
-			if (k.compareTo(current.key) < 0) {
-				current = current.left;
-			} else if (k.compareTo(current.key) > 0) {
-				current = current.right;
-			} else {
-				return current;
-			}
-		}
 		return null;
-	}
-	
-	public Node getParentNode(Node n) {
-		Deque<Node> stack = new LinkedList<>();
-		Node current = root;
-		stack.push(root);
-		Comparable<K> k  = (Comparable<K>) n.key;
-		while(current != null) {
-			if (k.compareTo(current.key) < 0) {
-				current = current.left;
-			} else if (k.compareTo(current.key) > 0) {
-				current = current.right;
-			} else {
-				if (stack.size() >= 2) {
-				stack.pop();
-				return stack.pop();
-				} else {
-					return stack.pop();
-				}
-			}
-			stack.push(current);
-		}
-		return null;
-		
 	}
 
 	@Override
@@ -172,23 +198,26 @@ public class MyAVLTree<K, V> implements Map<K, V>, Iterable<edu.frcc.csc1061jsp2
 		if (root == null) {
 			Node newNode = new Node(key, value);
 			root = newNode;
-			updateHeight(newNode);
 			size++;
-			return null;
+			updateHeight(root);
+			return value;
 		}
 		
+		path.clear();
 		Node parent = null;
 		Node current = root;
-		path.clear();
-		Comparable<K> k = (Comparable<K>) key; //This is so we can call compareTo()
-		while (current != null) {
+		Comparable<K> k = (Comparable<K>) key;
+		while(current != null) {
 			path.add(current);
-			parent = current;
-			if (k.compareTo(current.key) < 0) {
+			if(k.compareTo(current.key) < 0) {
+				parent = current;
 				current = current.left;
-			} else if (k.compareTo(current.key) > 0){
+			}
+			else if (k.compareTo(current.key) > 0) {
+				parent = current;
 				current = current.right;
-			} else {
+			}
+			else {
 				V oldVal = current.value;
 				current.value = value;
 				return oldVal;
@@ -198,252 +227,200 @@ public class MyAVLTree<K, V> implements Map<K, V>, Iterable<edu.frcc.csc1061jsp2
 		Node newNode = new Node(key, value);
 		if (k.compareTo(parent.key) < 0) {
 			parent.left = newNode;
-		} else {
+		}
+		else {
 			parent.right = newNode;
 		}
-		updateHeight(newNode);
-		balancePath();
-		size++;
 		
+		updateHeight(root);
+		balancePath();
+		
+		size++;
 		return null;
 	}
-
+	
 	private void updateHeight(Node node) {
-		if (node.left == null && node.right == null) {
+		if(node.left == null && node.right == null) {
 			node.height = 0;
-		} else if (node.left == null) {
+		}
+		else if (node.left == null) {
 			node.height = node.right.height + 1;
-		} else if (node.right == null) {
+		}
+		else if (node.right == null) {
 			node.height = node.left.height + 1;
-		} else {
-			node.height = Math.max(node.left.height, node.right.height) + 1;
+		}
+		else {
+			node.height = Math.max(node.left.height,  node.right.height) + 1;
 		}
 	}
 	
 	private int balanceFactor(Node current) {
-		if (current.left == null && current.right == null) {
-			return 0;
-		} else if (current.left == null) {
-			return current.right.height;
-		} else if (current.right == null) {
-			return -current.left.height;
-		} else {
+		int balanceFactor = 0;
+		if (current.right == null) {
+			balanceFactor = -current.height;
 		}
-			return current.right.height - current.left.height;
+		else if (current.left == null) {
+			balanceFactor = current.height;
 		}
+		else {
+			balanceFactor = current.right.height - current.left.height;
+		}
+		return balanceFactor;
+ 	}
 	
 	private void balancePath() {
 		for (int i = path.size() - 1; i >= 0; i--) {
-			Node current = path.get(i);
-			updateHeight(current);
-			Node parent = null;
+			Node gp = path.get(i);
+			updateHeight(gp);
+			Node parent_of_gp = null;
 			if (i > 0) {
-				parent = path.get(i - 1);
-			}
-			switch (balanceFactor(current)) {
-			case -2:
-				if (balanceFactor(current.left) <= 0) {
-					balanceLL(current, parent);
-					
-				} else {
-					balanceLR(current,parent);
-				}
-			case 2:
-				if (balanceFactor(current.right) >= 0) {
-					balanceRR(current,parent);
-				} else {
-					balanceRL(current,parent);
-					
-				}
+				parent_of_gp = path.get(i - 1);
 			}
 			
+			switch(balanceFactor(gp)) {
+				case -2:
+					if (balanceFactor(gp.left) <= 0) {
+						//LL imbalance
+						balanceLL(gp, parent_of_gp);
+					}
+					else {
+						// LR imbalance
+						balanceLR(gp, parent_of_gp);
+					}
+					break;
+				case 2:
+					if (balanceFactor(gp.right) >= 0) {
+						// RR imbalance
+					}
+					else {
+						// RL imbalance
+					}
+					break;
+			}
 		}
 	}
 	
-	private void balanceLL(Node node, Node parent) {
-		Node ggp = parent;
-		Node gp = node; 
-		Node par = gp.left;
-		Node ch = par.left;
+	private void balanceLL(Node gp, Node parentOfGp) {
+		Node parent = gp.left;
+		Node child = parent.left;
 		
+		// Deal with gp connection to it's parent
 		if (gp == root) {
-			root = par;
-		}
-		if (ggp.right == node) {
-			ggp.right = par;
-		} else {
-			ggp.left = par;
-		}
-		gp.left = gp.left.left;
-		par.right = gp;
-	
-	}
-	
-	private void balanceRR(Node node, Node parent) {
-		Node ggp = parent;
-		Node gp = node; 
-		Node par = gp.right;
-		Node ch = par.right;
-		
-		if (gp == root) {
-			root = par;
-		}
-		if (ggp.left == node) {
-			ggp.left = par;
-		} else {
-			ggp.right = par;
-		}
-		node.right = node.right.right;
-		node.right.left = node;
-	}
-	
-	private void balanceLR(Node node, Node parent) {
-		Node ggp = parent;
-		Node gp = node;
-		Node par = gp.left;
-		Node ch = par.right;
-		if (gp == root) {
-			root = ch;
+			root = parent;
 		}
 		else {
-			if (ggp.left == par) {
-				ggp.left = ch;
-			} else {
-				ggp.right = ch;
+			if (parentOfGp.left == gp) {
+				parentOfGp.left = parent;
+			}
+			else {
+				parentOfGp.right = parent;
+			}
+		}
+	
+		// Make other node hanging off parent to gp
+		gp.left = parent.right;
+		// Move gp to right of parent
+		parent.right = gp;
+
+		updateHeight(gp); 
+		updateHeight(child);
+		updateHeight(parent);
+	}
+	
+	private void balanceLR(Node gp, Node parentOfGp) {
+		Node parent = gp.left;
+		Node child = parent.right;
+
+		// Deal with gp connection to it's parent
+		if (gp == root) {
+			root = child;
+		}
+		else {
+			if (parentOfGp.left == gp) {
+				parentOfGp.left = child;
+			}
+			else {
+				parentOfGp.right = child;
 			}
 		}
 		
-		par.right = ch.left;
-		gp.left = ch.right;
+		// Since child is going to lose it's nodes 
+		// assign them to the right place first
+		parent.right = child.left;
+		gp.left = child.right;
 		
-		ch.left = par;
-		ch.right = gp;
+		// Now change child's children
+		child.left = parent;
+		child.right = gp;
+		
 		updateHeight(gp);
-		updateHeight(par);
-		updateHeight(ch);
+		updateHeight(parent);
+		updateHeight(child);
 	}
 	
-	private void balanceRL(Node node, Node parent) {
-		Node ggp = parent;
-		Node gp = node;
-		Node par = gp.right;
-		Node ch = par.left;
+	// Homework. See D2L
+	private void balanceRR(Node gp, Node parentOfGp) {
+		Node parent = gp.right;
+		Node child = parent.right;
+		
+		// Deal with gp connection to it's parent
 		if (gp == root) {
-			root = ch;
+			root = parent;
 		}
 		else {
-			if (ggp.right == par) {
-				ggp.right = ch;
-			} else {
-				ggp.left = ch;
+			if (parentOfGp.right == gp) {
+				parentOfGp.right = parent;
+			}
+			else {
+				parentOfGp.left = parent;
+			}
+		}
+	
+		// Make other node hanging off parent to gp
+		gp.right = parent.left;
+		// Move gp to right of parent
+		parent.left = gp;
+
+		updateHeight(gp); 
+		updateHeight(child);
+		updateHeight(parent);
+	}
+
+	private void balanceRL(Node gp, Node parentOfGp) {
+		Node parent = gp.left;
+		Node child = parent.right;
+
+		// Deal with gp connection to it's parent
+		if (gp == root) {
+			root = child;
+		}
+		else {
+			if (parentOfGp.right == gp) {
+				parentOfGp.right = child;
+			}
+			else {
+				parentOfGp.left = child;
 			}
 		}
 		
-		par.left = ch.right;
-		gp.right = ch.left;
+		// Since child is going to lose it's nodes 
+		// assign them to the right place first
+		parent.left = child.right;
+		gp.right = child.left;
 		
-		ch.right = par;
-		ch.left = gp;
+		// Now change child's children
+		child.right = parent;
+		child.left = gp;
+		
 		updateHeight(gp);
-		updateHeight(par);
-		updateHeight(ch);
+		updateHeight(parent);
+		updateHeight(child);
 	}
 	
-	//homework
+	@Override
 	public V remove(Object key) {
-		if (!containsKey(key)) {
-			return null;
-		}
-		
-		//Comparable<K> k = (Comparable<K>) key;
-		Node searchNode = getNode(key);
-		Node parentNode = getParentNode(searchNode);
-		
-		V oldVal = searchNode.value;
-		if (searchNode.left == null && searchNode.right == null) {
-			if (((Comparable<K>) searchNode.key).compareTo(parentNode.key) < 0) {
-			parentNode.left = null;
-			} else if (((Comparable<K>) searchNode.key).compareTo(parentNode.key) > 0) {
-				parentNode.right = null;
-			}
-			return oldVal;
-		}
-		else if (!(searchNode.left == null) && !(searchNode.right == null)) {
-			Node remNode = inOrderPredecessor(searchNode);
-			if (((Comparable<K>) searchNode.key).compareTo(parentNode.key) < 0) {
-				parentNode.left.value = remNode.value;
-				parentNode.left.key = remNode.key;
-				} else if (((Comparable<K>) searchNode.key).compareTo(parentNode.key) > 0) {
-					parentNode.right.value = remNode.value;
-					parentNode.right.key = remNode.key;
-				}
-			remNode = null;
-			return oldVal;
-		}
-		else if (searchNode.left == null) {
-		searchNode.value = searchNode.right.value;
-		searchNode.key = searchNode.right.key;
-		searchNode.right = null;
-		return oldVal;
-		}
-	else if (searchNode.right == null) {
-		searchNode.value = searchNode.left.value;
-		searchNode.key = searchNode.left.key;
-		searchNode.left = null;
-		return oldVal;
-		}
-		
+		// TODO Auto-generated method stub
 		return null;
-	}
-	
-	public Node inOrderPredecessor(Node sNode) {
-		Node theRoot = sNode;
-		Node parent = sNode;
-		if (sNode.left != null) {
-			parent = sNode;
-			sNode = sNode.left;
-		}
-		if (sNode.right == null) {
-			if (!(parent.left.left == null)) {
-				parent.left = sNode.left;
-				parent.value = sNode.value;
-				parent.key = sNode.key;
-			}
-			sNode = null;
-			return parent;
-		}
-		while (sNode.right != null) {
-			parent = sNode;
-			sNode = sNode.right;
-		}
-		
-		Node oldNode = sNode;
-		
-		
-		if (theRoot == root) { //!todo
-			root.value = sNode.value;
-			root.key = sNode.key;
-			parent.right = null;
-		}
-		sNode = null;
-		return oldNode;
-	}
-	
-	public int inOrderDepth(Node sNode) {
-		int thisRoot = 0;
-		if (sNode.left != null) {
-			sNode = sNode.left;
-			thisRoot++;
-		}
-		if (sNode.right == null) {
-			thisRoot++;
-			return thisRoot;
-		}
-		while (sNode.right.right != null) {
-			sNode = sNode.right;
-			thisRoot++;
-		}
-		return thisRoot;
 	}
 
 	@Override
@@ -460,7 +437,7 @@ public class MyAVLTree<K, V> implements Map<K, V>, Iterable<edu.frcc.csc1061jsp2
 
 	@Override
 	public Set<K> keySet() {
-		
+		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -475,90 +452,10 @@ public class MyAVLTree<K, V> implements Map<K, V>, Iterable<edu.frcc.csc1061jsp2
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	public Iterator<edu.frcc.csc1061jsp25.MyAVL.MyAVLTree.Node> iterator() {
-		// TODO Auto-generated method stub
-		return new NonRecursiveIterator();
-	}
 	
-	private class NonRecursiveIterator implements Iterator<edu.frcc.csc1061jsp25.MyAVL.MyAVLTree.Node> {
-		
-		private Deque<Node> stack = new ArrayDeque<>();
-		
-		public NonRecursiveIterator() {
-			pushOnStack(root);
-		}
-		
-		@Override
-		public boolean hasNext() {
-			return !stack.isEmpty();
-		}
-
-		@Override
-		public edu.frcc.csc1061jsp25.MyAVL.MyAVLTree.Node next() {
-			Node node = stack.pop();
-			pushOnStack(node.right); //push right node, then everything to the left
-			return node;
-			
-		}
-		
-		public void pushOnStack(Node n) {
-			Node current = n;
-			while (current != null) {
-				stack.push(current);
-				current = current.left;
-			}
-		}
-		
-	}
 	
-	private class RecursiveIterator implements Iterator<V> {
-		
-		private Queue<V> list = new ArrayDeque<>();
-		
-		public RecursiveIterator() {
-			preorder(root);
-		}
-		
-		private void preorder(Node node) {
-			if (node == null) {
-				return;
-			}
-			list.add(node.value);
-			preorder(node.left);
-			preorder(node.right);
-		}
-		
-		private void postorder(Node node) {
-			if (node == null) {
-				return;
-			}
-			list.add(node.value);
-			preorder(node.left);
-			preorder(node.right);
-		}
-		
-		private void inorder(Node node) {
-			if (node == null) {
-				return;
-			}
-			inorder(node.left);
-			list.add(node.value);
-			inorder(node.right);
-			
-		}
-		
-		@Override
-		public boolean hasNext() {
-			return !list.isEmpty();
-		}
-
-		@Override
-		public V next() {
-			return list.remove(); //treat it like a queue
-		}
-		
-	}
-
+	
+	
+	
+	
 }

@@ -290,10 +290,11 @@ public class MyAVLTree<K, V> implements Map<K, V>, Iterable<edu.frcc.csc1061jsp2
 					break;
 				case 2:
 					if (balanceFactor(gp.right) >= 0) {
-						// RR imbalance
+						balanceRR(gp, parent_of_gp);
 					}
 					else {
 						// RL imbalance
+						balanceRL(gp, parent_of_gp);
 					}
 					break;
 			}

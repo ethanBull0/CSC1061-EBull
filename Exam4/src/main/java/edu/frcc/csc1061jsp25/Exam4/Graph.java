@@ -142,7 +142,9 @@ public class Graph<E> {
 		ArrayDeque<Vertex> objects = new ArrayDeque<>();
 		List<Vertex> values = new LinkedList<>();
 		for (Vertex v : vertices) {
-			objects.push(v);
+			for (Edge e : v.neighbors) {
+				objects.push(e.d);
+			}
 		}
 		values.add(objects.getLast());
 		while (objects.size() > 1) {
@@ -159,14 +161,26 @@ public class Graph<E> {
 	** of all the vertices in the breadth-first traversal.
 	*/
 	public List<Vertex> bfs() { //list of generic E?
-		ArrayDeque<Vertex> objects = new ArrayDeque<>();
 		List<Vertex> values = new LinkedList<>();
-		
+		if (vertices.size() == 0) {
+			return values;
+		}
+			values.add(vertices.get(0));
+			for (Vertex v : vertices) {
+				for (Edge e : v.neighbors) {
+					Vertex neighbor = e.d;
+					if (!(values.contains(neighbor))) {
+						values.add(neighbor);
+					}
+				}
+			}
+			return values;
+			
 		//add the src node from vertex n to stack
 		//add every neighbor under src node
 		//if our list does not contain node 0 in the stack
 		//push last (the bottom) to the list
-		return null;
+		
 	}
 	
 

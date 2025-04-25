@@ -183,12 +183,21 @@ public class Graph<E> {
 		
 	}
 	
-
+	//vertex? maybe use generic
 	/* TODO: Create a spanning tree using Kruskal's Algorithm and return it. 
 	** The spanning tree will be a new graph
 	*/
 	public Graph<E> findMinimumSpanningTree() {
+		List<E> takenVertices = new ArrayList<>();
+		List<E> mstVertices = new ArrayList<>();
+		for (int i = 0; vertices.size() != takenVertices.size(); i++) {
+			
+		}
 		
+		
+		E[][] edges;
+		
+		Graph<E> graph = new Graph<>(mstVertices, mstEdges);
 		return null;
 	}
 }

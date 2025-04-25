@@ -134,7 +134,7 @@ public class Graph<E> {
 	** or iteratively using a stack. It should return a list of all the 
 	** vertices in the pre-order depth-first traversal.
 	*/
-	public List<Vertex> dfs(Vertex root) {
+	public List<Vertex> dfs(Vertex root) { //breakpoint to make sure this thing works at end of func
 		//push every node to the stack starting from vertex 0 to n - 1
 		//if the vertex list does not contain element at top of stack,
 		//add it to the list
@@ -188,16 +188,28 @@ public class Graph<E> {
 	** The spanning tree will be a new graph
 	*/
 	public Graph<E> findMinimumSpanningTree() {
-		List<E> takenVertices = new ArrayList<>();
+		List<Vertex> takenVertices = new ArrayList<>();
 		List<E> mstVertices = new ArrayList<>();
+		List<Edge> viableEdges = new ArrayList<>();
 		for (int i = 0; vertices.size() != takenVertices.size(); i++) {
-			
+			Vertex lastWeightVertex = vertices.get(i);
+			List<Graph<E>.Edge> lastWeightNeighbors = lastWeightVertex.neighbors;
+			Edge path = lastWeightNeighbors.get(0);
+			for (Graph<E>.Edge e : lastWeightNeighbors) { //cut an iteration using regular for loop
+				if (e.weight < path.weight) {
+					path = e;
+				}
+			}
+			if (!(takenVertices.contains(path.s)))
+			viableEdges.add(path); //Used to ultimately make our MST
+			takenVertices.add(path.s); //Used to indicate we already made a path from this vertex
 		}
 		
 		
-		E[][] edges;
+		E[][] mstEdges = viableEdges;
+		
 		
 		Graph<E> graph = new Graph<>(mstVertices, mstEdges);
-		return null;
+		return graph;
 	}
 }

@@ -3,7 +3,7 @@ package edu.frcc.csc1061jsp25.Exam4;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.frcc.csc1061j.MyGraph.Graph;
+import edu.frcc.csc1061jsp25.Exam4.Graph;
 
 public class GraphTest {
 

@@ -134,13 +134,14 @@ public class Graph<E> {
 	** or iteratively using a stack. It should return a list of all the 
 	** vertices in the pre-order depth-first traversal.
 	*/
-	public List<Vertex> dfs(Vertex root) { //breakpoint to make sure this thing works at end of func
+	public List<Object> dfs(Object root) { //breakpoint to make sure this thing works at end of func
 		//push every node to the stack starting from vertex 0 to n - 1
 		//if the vertex list does not contain element at top of stack,
 		//add it to the list
 		//pop from stack
-		ArrayDeque<Vertex> objects = new ArrayDeque<>();
-		List<Vertex> values = new LinkedList<>();
+		ArrayDeque<Object> objects = new ArrayDeque<>();
+		List<Object> values = new LinkedList<>();
+		//Vertex v = vertices.get(0);
 		for (Vertex v : vertices) {
 			for (Edge e : v.neighbors) {
 				objects.push(e.d);
@@ -148,13 +149,13 @@ public class Graph<E> {
 		}
 		values.add(objects.getLast());
 		while (objects.size() > 1) {
-			Vertex v = objects.pop();
-			if (!(values.contains(v))) {
-				values.add(v);
+			Object o = objects.pop();
+			if (!(values.contains(o))) {
+				values.add(o);
 			}
 		}
 		objects.clear();
-		return null;
+		return values;
 	}
 
 	/* TODO: Implement the BFS algorithm for a graph. It should return a list 
@@ -200,13 +201,21 @@ public class Graph<E> {
 					path = e;
 				}
 			}
-			if (!(takenVertices.contains(path.s)))
+			if (!(takenVertices.contains(path.s))) {
 			viableEdges.add(path); //Used to ultimately make our MST
 			takenVertices.add(path.s); //Used to indicate we already made a path from this vertex
+			}
 		}
 		
 		
-		E[][] mstEdges = viableEdges;
+		E[][] mstEdges = (E[][]) new Object[viableEdges.size()][3];
+		
+		for (int i = 0; i < viableEdges.size(); i++) {
+	        Edge edge = viableEdges.get(i);
+	        mstEdges[i][0] = (E) edge.s; 
+	        mstEdges[i][1] = (E) edge.d; 
+	        mstEdges[i][2] = (E) Double.valueOf(edge.weight); 
+	    }
 		
 		
 		Graph<E> graph = new Graph<>(mstVertices, mstEdges);

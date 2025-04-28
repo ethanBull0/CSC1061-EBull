@@ -7,40 +7,38 @@ import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 
-
 public class Graph<E> {
 	public List<Vertex> vertices = new ArrayList<>();
-	
+
 	private class Vertex {
 		private E elem;
 		private List<Edge> neighbors = new ArrayList<>();
-		
-		public Vertex (E elem) {
+
+		public Vertex(E elem) {
 			this.elem = elem;
 		}
 
 		public E getKey() {
 			return elem;
 		}
-		
+
 		@Override
 		public boolean equals(Object other) {
 			if (!(other instanceof Graph.Vertex))
 				return false;
-			
-			if (elem.equals(((Vertex)other).elem)) {
+
+			if (elem.equals(((Vertex) other).elem)) {
 				return true;
 			}
-			return false;		
+			return false;
 		}
-		
-		@Override 
+
+		@Override
 		public String toString() {
 			return elem.toString();
 		}
 	}
 
-	
 	private class Edge implements Comparable<Edge> {
 		private Vertex s;
 		private Vertex d;
@@ -62,12 +60,16 @@ public class Graph<E> {
 		}
 	}
 
+	public Graph() {
+
+	}
+
 	public Graph(List<Vertex> vertices) {
 		for (Vertex vertex : vertices) {
 			addVertex(new Vertex(vertex.getKey()));
 		}
 	}
-	
+
 	public Graph(List<E> vertices, E[][] edges) {
 		for (E ver : vertices) {
 			addVertex(new Vertex(ver));
@@ -86,7 +88,7 @@ public class Graph<E> {
 	}
 
 	public boolean addEdge(Edge edge) {
-		
+
 		List<Edge> neighbors = edge.s.neighbors;
 		if (!neighbors.contains(edge)) {
 			neighbors.add(edge);
@@ -97,16 +99,17 @@ public class Graph<E> {
 	}
 
 	private Vertex findVertex(E key) {
-		for(Vertex v : vertices) {
+		for (Vertex v : vertices) {
 			if (v.elem.equals(key)) {
 				return v;
 			}
 		}
 		return null;
 	}
+
 	private void createAdjacencyLists(E[][] edges) {
 		for (int i = 0; i < edges.length; i++) {
-			addEdge(new Edge(findVertex(edges[i][0]), findVertex(edges[i][1]), (int)edges[i][2]));
+			addEdge(new Edge(findVertex(edges[i][0]), findVertex(edges[i][1]), (int) edges[i][2]));
 		}
 	}
 
@@ -129,22 +132,23 @@ public class Graph<E> {
 		}
 		return childNodes;
 	}
-	
-	/* TODO: Implement the DFS algorithm for a graph either recursively
-	** or iteratively using a stack. It should return a list of all the 
-	** vertices in the pre-order depth-first traversal.
-	*/
-	public List<Object> dfs(Object root) { //breakpoint to make sure this thing works at end of func
-		//push every node to the stack starting from vertex 0 to n - 1
-		//if the vertex list does not contain element at top of stack,
-		//add it to the list
-		//pop from stack
+
+	/*
+	 * TODO: Implement the DFS algorithm for a graph either recursively or
+	 * iteratively using a stack. It should return a list of all the vertices in the
+	 * pre-order depth-first traversal.
+	 */
+	public List<Object> dfs(Object root) { // breakpoint to make sure this thing works at end of func
+		// push every node to the stack starting from vertex 0 to n - 1
+		// if the vertex list does not contain element at top of stack,
+		// add it to the list
+		// pop from stack
 		ArrayDeque<Object> objects = new ArrayDeque<>();
 		List<Object> values = new LinkedList<>();
-		//Vertex v = vertices.get(0);
+		// Vertex v = vertices.get(0);
 		for (Vertex v : vertices) {
 			for (Edge e : v.neighbors) {
-				objects.push(e.d);
+				objects.push(e.s);
 			}
 		}
 		values.add(objects.getLast());
@@ -158,67 +162,109 @@ public class Graph<E> {
 		return values;
 	}
 
-	/* TODO: Implement the BFS algorithm for a graph. It should return a list 
-	** of all the vertices in the breadth-first traversal.
-	*/
-	public List<Vertex> bfs() { //list of generic E?
+	/*
+	 * TODO: Implement the BFS algorithm for a graph. It should return a list of all
+	 * the vertices in the breadth-first traversal.
+	 */
+	public List<Vertex> bfs() { // list of generic E?
 		List<Vertex> values = new LinkedList<>();
 		if (vertices.size() == 0) {
 			return values;
 		}
-			values.add(vertices.get(0));
-			for (Vertex v : vertices) {
-				for (Edge e : v.neighbors) {
-					Vertex neighbor = e.d;
-					if (!(values.contains(neighbor))) {
-						values.add(neighbor);
-					}
+		values.add(vertices.get(0));
+		for (Vertex v : vertices) {
+			for (Edge e : v.neighbors) {
+				Vertex neighbor = e.d;
+				if (!(values.contains(neighbor))) {
+					values.add(neighbor);
 				}
-			}
-			return values;
-			
-		//add the src node from vertex n to stack
-		//add every neighbor under src node
-		//if our list does not contain node 0 in the stack
-		//push last (the bottom) to the list
-		
-	}
-	
-	//vertex? maybe use generic
-	/* TODO: Create a spanning tree using Kruskal's Algorithm and return it. 
-	** The spanning tree will be a new graph
-	*/
-	public Graph<E> findMinimumSpanningTree() {
-		List<Vertex> takenVertices = new ArrayList<>();
-		List<E> mstVertices = new ArrayList<>();
-		List<Edge> viableEdges = new ArrayList<>();
-		for (int i = 0; vertices.size() != takenVertices.size(); i++) {
-			Vertex lastWeightVertex = vertices.get(i);
-			List<Graph<E>.Edge> lastWeightNeighbors = lastWeightVertex.neighbors;
-			Edge path = lastWeightNeighbors.get(0);
-			for (Graph<E>.Edge e : lastWeightNeighbors) { //cut an iteration using regular for loop
-				if (e.weight < path.weight) {
-					path = e;
-				}
-			}
-			if (!(takenVertices.contains(path.s))) {
-			viableEdges.add(path); //Used to ultimately make our MST
-			takenVertices.add(path.s); //Used to indicate we already made a path from this vertex
 			}
 		}
-		
-		
-		E[][] mstEdges = (E[][]) new Object[viableEdges.size()][3];
-		
-		for (int i = 0; i < viableEdges.size(); i++) {
-	        Edge edge = viableEdges.get(i);
-	        mstEdges[i][0] = (E) edge.s; 
-	        mstEdges[i][1] = (E) edge.d; 
-	        mstEdges[i][2] = (E) Double.valueOf(edge.weight); 
-	    }
-		
-		
-		Graph<E> graph = new Graph<>(mstVertices, mstEdges);
-		return graph;
+		return values;
+
+		// add the src node from vertex n to stack
+		// add every neighbor under src node
+		// if our list does not contain node 0 in the stack
+		// push last (the bottom) to the list
+
+	}
+
+	public List<Edge> sortEdgesByWeight() {
+		List<Edge> edges = new ArrayList<>();
+		for (Vertex v : vertices) {
+			for (Edge e : v.neighbors) {
+				edges.add(e);
+			}
+		}
+		for (int i = 0; i < edges.size() - 1; i++) {
+			for (int j = 1; j < edges.size() - i - 1; j++) {
+				int thisWeight = edges.get(j).weight;
+				int lastWeight = edges.get(j - 1).weight;
+				if (lastWeight > thisWeight) {
+					Edge temp = edges.get(j - 1);
+					edges.set(j - 1, edges.get(j));
+					edges.set(j, temp);
+				}
+			}
+		}
+		return edges;
+	}
+	// vertex? maybe use generic
+	/*
+	 * TODO: Create a spanning tree using Kruskal's Algorithm and return it. The
+	 * spanning tree will be a new graph
+	 */
+	public Graph<E> findMinimumSpanningTree() {
+		Graph<E> newGraph = new Graph<>();
+		List<Edge> sortedEdges = sortEdgesByWeight();
+		List<Vertex> trackedVertices = new LinkedList<>();
+		/* Vertex firstSource = new Vertex(sortedEdges.get(0).s.elem);
+		Vertex firstDestination = new Vertex(sortedEdges.get(0).d.elem);
+		Edge firstEdgeS = new Edge(firstSource, firstDestination, sortedEdges.get(0).weight);
+		Edge firstEdgeD = new Edge(firstDestination, firstSource, sortedEdges.get(0).weight);
+		newGraph.addEdge(firstEdgeS);
+		newGraph.addEdge(firstEdgeD);
+		sortedEdges.remove(firstEdgeS);
+		sortedEdges.remove(firstEdgeD);
+		trackedVertices.add(firstSource);
+		trackedVertices.add(firstDestination); */
+		while (trackedVertices.size() <= vertices.size() && !(sortedEdges.isEmpty())) {
+		//for (int i = 0; i < sortedEdges.size(); i += 2) {
+			//if (trackedVertices.size() == vertices.size()) {
+			//	break;//if our trackedVertices equals the amount of actual vertices, we break the for loop
+			//}
+			Edge thisEdge = sortedEdges.get(0);
+			Vertex thisDestination = thisEdge.d;
+			Vertex source = new Vertex(thisEdge.s.elem);
+			Vertex destination = new Vertex(thisEdge.d.elem);
+			Edge edgeS = new Edge(source, destination, sortedEdges.get(0).weight);
+			Edge edgeD = new Edge(destination, source, sortedEdges.get(0).weight);
+			if (trackedVertices.contains(thisDestination)) {//if thisEdge forms a cycle, remove and skip it 
+				sortedEdges.remove(edgeS);
+				sortedEdges.remove(edgeD);
+			} else {//else, add edgeS and edgeD to newGraph
+				if (!(newGraph.vertices.contains(source))) {
+				newGraph.addVertex(source); //just add source?
+				}
+				if (!(newGraph.vertices.contains(destination))) {
+					newGraph.addVertex(destination);
+				}
+				
+				newGraph.addEdge(edgeS);
+				newGraph.addEdge(edgeD);
+				sortedEdges.remove(edgeS);
+				sortedEdges.remove(edgeD);
+				if (!(trackedVertices.contains(source))) {
+				trackedVertices.add(source);
+				}
+				if (!(trackedVertices.contains(destination))) {
+				trackedVertices.add(destination);
+				}
+			
+			}
+			
+			//}
+		}
+		return newGraph;
 	}
 }

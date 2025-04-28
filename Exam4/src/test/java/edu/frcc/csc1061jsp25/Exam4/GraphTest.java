@@ -28,10 +28,10 @@ public class GraphTest {
 		graph.printEdges();
 		
 		System.out.println("Minimum Spanning Tree:");
-		//graph.findMinimumSpanningTree().printEdges();		
+		graph.findMinimumSpanningTree().printEdges();		
 		
-		System.out.println("DFS Result:");
-		System.out.println(graph.dfs(vertices.get(0)));
+		//System.out.println("DFS Result:");
+		//System.out.println(graph.dfs(vertices.get(0)));
 	}
 
 

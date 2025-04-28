@@ -218,28 +218,13 @@ public class Graph<E> {
 		Graph<E> newGraph = new Graph<>();
 		List<Edge> sortedEdges = sortEdgesByWeight();
 		List<Vertex> trackedVertices = new LinkedList<>();
-		/* Vertex firstSource = new Vertex(sortedEdges.get(0).s.elem);
-		Vertex firstDestination = new Vertex(sortedEdges.get(0).d.elem);
-		Edge firstEdgeS = new Edge(firstSource, firstDestination, sortedEdges.get(0).weight);
-		Edge firstEdgeD = new Edge(firstDestination, firstSource, sortedEdges.get(0).weight);
-		newGraph.addEdge(firstEdgeS);
-		newGraph.addEdge(firstEdgeD);
-		sortedEdges.remove(firstEdgeS);
-		sortedEdges.remove(firstEdgeD);
-		trackedVertices.add(firstSource);
-		trackedVertices.add(firstDestination); */
 		while (trackedVertices.size() <= vertices.size() && !(sortedEdges.isEmpty())) {
-		//for (int i = 0; i < sortedEdges.size(); i += 2) {
-			//if (trackedVertices.size() == vertices.size()) {
-			//	break;//if our trackedVertices equals the amount of actual vertices, we break the for loop
-			//}
 			Edge thisEdge = sortedEdges.get(0);
-			Vertex thisDestination = thisEdge.d;
 			Vertex source = new Vertex(thisEdge.s.elem);
 			Vertex destination = new Vertex(thisEdge.d.elem);
 			Edge edgeS = new Edge(source, destination, sortedEdges.get(0).weight);
 			Edge edgeD = new Edge(destination, source, sortedEdges.get(0).weight);
-			if (trackedVertices.contains(thisDestination)) {//if thisEdge forms a cycle, remove and skip it 
+			 if (!(dfs(source).contains(destination))) {
 				sortedEdges.remove(edgeS);
 				sortedEdges.remove(edgeD);
 			} else {//else, add edgeS and edgeD to newGraph
@@ -260,10 +245,7 @@ public class Graph<E> {
 				if (!(trackedVertices.contains(destination))) {
 				trackedVertices.add(destination);
 				}
-			
 			}
-			
-			//}
 		}
 		return newGraph;
 	}

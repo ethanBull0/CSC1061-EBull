@@ -88,10 +88,11 @@ public class Graph<E> {
 	}
 
 	public boolean addEdge(Edge edge) {
+		List<Edge> sNeighbors = edge.s.neighbors;
 
-		List<Edge> neighbors = edge.s.neighbors;
-		if (!neighbors.contains(edge)) {
-			neighbors.add(edge);
+		if (!sNeighbors.contains(edge)) {
+			sNeighbors.add(edge);
+			
 			return true;
 		} else {
 			return false;
@@ -190,7 +191,7 @@ public class Graph<E> {
 	}
 
 	public List<Edge> sortEdgesByWeight() {
-		List<Edge> edges = new ArrayList<>();
+		List<Edge> edges = new LinkedList<>();
 		for (Vertex v : vertices) {
 			for (Edge e : v.neighbors) {
 				edges.add(e);
@@ -217,36 +218,29 @@ public class Graph<E> {
 	public Graph<E> findMinimumSpanningTree() {
 		Graph<E> newGraph = new Graph<>();
 		List<Edge> sortedEdges = sortEdgesByWeight();
-		List<Vertex> trackedVertices = new LinkedList<>();
-		while (trackedVertices.size() <= vertices.size() && !(sortedEdges.isEmpty())) {
+		while (!(sortedEdges.isEmpty())) {
 			Edge thisEdge = sortedEdges.get(0);
 			Vertex source = new Vertex(thisEdge.s.elem);
 			Vertex destination = new Vertex(thisEdge.d.elem);
 			Edge edgeS = new Edge(source, destination, sortedEdges.get(0).weight);
 			Edge edgeD = new Edge(destination, source, sortedEdges.get(0).weight);
-			 if (!(dfs(source).contains(destination))) {
-				sortedEdges.remove(edgeS);
-				sortedEdges.remove(edgeD);
-			} else {//else, add edgeS and edgeD to newGraph
-				if (!(newGraph.vertices.contains(source))) {
-				newGraph.addVertex(source); //just add source?
-				}
-				if (!(newGraph.vertices.contains(destination))) {
-					newGraph.addVertex(destination);
-				}
-				
+			
 				newGraph.addEdge(edgeS);
 				newGraph.addEdge(edgeD);
+				
+			
+				if (!(newGraph.vertices.contains(source))) {
+				newGraph.addVertex(edgeS.s); //just add source?
+				}
+				if (!(newGraph.vertices.contains(destination))) {
+					newGraph.addVertex(edgeD.s);
+				}
+				
 				sortedEdges.remove(edgeS);
 				sortedEdges.remove(edgeD);
-				if (!(trackedVertices.contains(source))) {
-				trackedVertices.add(source);
-				}
-				if (!(trackedVertices.contains(destination))) {
-				trackedVertices.add(destination);
-				}
-			}
 		}
+		
+		
 		return newGraph;
 	}
 }

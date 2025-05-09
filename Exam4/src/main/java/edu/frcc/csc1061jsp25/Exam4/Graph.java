@@ -163,10 +163,7 @@ public class Graph<E> {
 		return values;
 	}
 
-	/*
-	 * TODO: Implement the BFS algorithm for a graph. It should return a list of all
-	 * the vertices in the breadth-first traversal.
-	 */
+	
 	public List<Vertex> bfs() { // list of generic E?
 		List<Vertex> values = new LinkedList<>();
 		if (vertices.size() == 0) {
